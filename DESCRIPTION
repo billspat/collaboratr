@@ -1,0 +1,17 @@
+Package: commruleR
+Title: process 'L0' data for the commRULES projects
+Version: 0.0.0.9000
+Authors@R: 
+    person("Patrick", "Bills", , "billspat@msu.edu", role = c("aut", "cre"),
+           comment = c(ORCID = "YOUR-ORCID-ID"))
+Description: Data management for commRULES project of MSU IBEEM,using the EDI data package framework
+License: MIT + file LICENSE
+Suggests: 
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.3.2
+Imports: 
+    googledrive,
+    googlesheets4

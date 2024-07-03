@@ -1,0 +1,6 @@
+PROJECT_EMAIL='your-googledrive@email.somewhere'
+PROJECT_SHARE_DRIVE='share_drive_name'
+PROJECT_SHARE_DRIVE_PATH='path/inside/share/drive/to/data'
+L0_PATH="data/L0"
+L1_PATH="data/L1"
+L2_PATH="data/L2"
