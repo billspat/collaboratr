@@ -15,42 +15,26 @@ knitr::opts_chunk$set(
 
 # commruleR
 
+### [MSU IBEEM](https://ibeem.msu.edu) commRULES project
+
 <!-- badges: start -->
 [![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 [![CRAN status](https://www.r-pkg.org/badges/version/commruleR)](https://CRAN.R-project.org/package=commruleR)
 <!-- badges: end -->
 
-The goal of commruleR is to ...
+*This is very early version under heavy development.*
+
+This R package is part of 3 repositories that support the data entry, validation and accumulation of a meta-analysis for the commRULES project.  
+
+1. commRULES data: version controlled data collection for tracking provenance using git, this is the L0 and L1  layers in the EDI framework
+2. commRuler: commRULES data management code for L0 and L0->L1 layer in EDI framework
+3. commRULES-analysis: R code for reproducible data analysis , L1->L2 layers in EDI framework
 
 ## Installation
 
-You can install the development version of commruleR like so:
+This package uses [renv](https://rstudio.github.io/renv/) to manage the packages you need to install, which creates an `renv.lock` file for you.  
 
-``` r
-# FILL THIS IN! HOW CAN PEOPLE INSTALL YOUR DEV PACKAGE?
-```
+- install RENV: this can go into your R environment used for all packages, so fire up R with now project select and `install.packages('renv')`
+- clone this repository into a [new Rstudio project](https://docs.posit.co/ide/user/ide/guide/code/projects.html) and open it
+- inside the Rstudio project in the R console, `renv::restore()`
 
-## Example
-
-This is a basic example which shows you how to solve a common problem:
-
-```{r example}
-library(commruleR)
-## basic example code
-```
-
-What is special about using `README.Rmd` instead of just `README.md`? You can include R chunks like so:
-
-```{r cars}
-summary(cars)
-```
-
-You'll still need to render `README.Rmd` regularly, to keep `README.md` up-to-date. `devtools::build_readme()` is handy for this.
-
-You can also embed plots, for example:
-
-```{r pressure, echo = FALSE}
-plot(pressure)
-```
-
-In that case, don't forget to commit and push the resulting figure files, so they display on GitHub and CRAN.
