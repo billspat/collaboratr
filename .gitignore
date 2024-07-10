@@ -4,3 +4,5 @@ renv/
 .DS_Store
 .Rhistory
 ~$*.xlsx
+*.json
+inst/doc
