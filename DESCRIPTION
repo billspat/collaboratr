@@ -7,6 +7,8 @@ Authors@R:
 Description: Data management for commRULES project of MSU IBEEM,using the EDI data package framework
 License: MIT + file LICENSE
 Suggests: 
+    knitr,
+    rmarkdown,
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
 Encoding: UTF-8
@@ -16,3 +18,4 @@ Imports:
     googledrive,
     googlesheets4,
     readr
+VignetteBuilder: knitr
