@@ -16,6 +16,35 @@
 # to prevent that from happening when this sheet is sourced, it's wrapped into a function
 # that gets called prior to running other functions
 
+#' check google cloud api key configuration
+#'
+#' google drive requires an 'api key' set in  cloud project, which you can copy from the cloud console.
+#' how that works is beyond the scope of this, but is a 39-character alphanumber code.  This function
+#' checks that the key is in the environment, which can be set in Renviron.  see help for more details
+get_api_key<-function(){
+
+  k = Sys.getenv('PROJECT_API_KEY')
+  if(!grep('^\\w{39}$', k, perl=TRUE) == 1)
+     {stop("the PROJECT_API_KEY is either not set in .Renviron or is not a alpha-numeric length 39")}
+
+  return(k)
+
+}
+
+
+get_drive_email <- function(drive_email = NULL){
+  if( is.null(drive_email)){
+    drive_email <- if(!is.null(drive_email)) drive_email else Sys.getenv('PROJECT_EMAIL')
+  }
+
+  if(drive_email==""){
+    warning("no email provided to connect to drive.  please include the parameter or set one in .Renviron")
+
+  }
+
+  return( drive_email)
+}
+
 
 #' connect to your google drive account, required set-up for using the google drive packages
 #'
@@ -27,18 +56,29 @@
 #'
 #' @return TRUE if the functions requiring the google R packages complete without error
 #' @export
-gdrive_setup <- function(drive_email=NULL){
+gdrive_setup <- function(drive_email=NULL, reset=FALSE){
   #TODO check if these are installed (since only 'suggested') and error if not
   require(googlesheets4)
   require(googledrive)
-  if( is.null(drive_email)){
-      drive_email <- if(!is.null(drive_email)) drive_email else Sys.getenv('PROJECT_EMAIL')
+
+  drive_email <- get_drive_email(drive_email)
+  drive_api_key <- get_api_key()
+  drive_api_id_file <- Sys.getenv('PROJECT_AUTH_FILE')
+  drive_api_id_name='ibeem-commruleR'
+
+  if(!file.exists(drive_id_file)){
+    stop("can't find ID file from Renviron PROJECT_AUTH_FILE")
+  }
+
+  if(reset){
+    googledrive::drive_deauth()
   }
 
   if(! googledrive::drive_has_token()){
-      googledrive::drive_auth(email = drive_email)
-    }
+    googledrive::drive_auth_configure(path=drive_api_id_file, api_key = drive_api_key)
+    googledrive::drive_auth(email = drive_email,scopes="drive.readonly")
 
+    }
 
   return(TRUE)
 }
@@ -57,7 +97,10 @@ gdrive_setup <- function(drive_email=NULL){
 read_gsheet<- function(gsheet_name, shared_drive, verbose="FALSE"){
 
   # assuming the user wants to load google sheets package and log-in if she wants to read from it
-  gdrive_setup()
+  if(!gdrive_setup()){
+    warning("there was a problem when setting up google drive authentication, can't open sheet")
+    return(False)
+  }
 
   if(! sheets_has_token()) {
     warning("no token for reading from Google drive.  Was there a problem with log-in?  Try gdrive_setup()")
@@ -89,6 +132,18 @@ read_gsheet<- function(gsheet_name, shared_drive, verbose="FALSE"){
 
 }
 
+read_gsheet_url<-function(gurl){
+  ginfo<-googledrive::drive_get(gurl)
+  if('id' %in% names(ginfo)){
+    read_gsheet()
+  }
+
+}
+
+read_gsheet_id<-function(gid){
+  f <- googledrive::drive_get(id=ginfo$id)
+
+}
 #' WIP get time stamp for a particular gfile
 #'
 #' @param gfile a file object from google drive
