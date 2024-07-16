@@ -62,7 +62,10 @@ But I've found that one get several "insufficient permissions" at my institution
     
 - download credentials
 
-In the OAuth 2.0 Client IDs, download the JSON to define.  copy to repository.   R uses the folder `inst` 
+In the OAuth 2.0 Client IDs, download the JSON file needs to be accessible by your R session.  It should not be inside your R code folder which is a git repository and this identity file should never be checked into git (for security).  It does not go into the package itself, and must be given to each person using the package.   To make it flexible, update the `.Renviron` file to point to that file. It may need to be the full path to the file.   For example
+`PROJECT_AUTH_FILE='/Users/myuserid/downloads/client_secret_77etc_blahblah.apps.googleusercontent.com.json'
+
+
 
 
 commands to try: 
