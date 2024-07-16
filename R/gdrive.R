@@ -12,6 +12,8 @@
 # these functions require the following packages to be installed
 # install.packages( c( "googlesheets4", "googledrive")), which are 'suggested' for this package
 #
+# These functions also require a googlesheet and drive API created in the Google Cloud console
+
 # To Use: then you must "require(googledrive)" which asks you to log-in
 # to prevent that from happening when this sheet is sourced, it's wrapped into a function
 # that gets called prior to running other functions
@@ -45,6 +47,25 @@ get_drive_email <- function(drive_email = NULL){
   return( drive_email)
 }
 
+#' get a google drive 'client' for authentication from env file
+#'
+#' reads values from the enviroment for configurating a google drive client
+#' for accesing gdrive file or gsheets data
+#' @returns 'client' for use in drive_auth_configure or
+gdrive_client_setup <- function(){
+  drive_api_id_file <- Sys.getenv('DRIVE_API_ID_FILE')
+  drive_api_id_name<- Sys.getenv('DRIVE_API_ID_NAME')
+  if(!file.exists(drive_api_id_file)){
+    stop("can't find ID file from Renviron DRIVE_API_ID_FILE, can't authenticate to google drive")
+  }
+
+  gdrive_client <- gargle::gargle_oauth_client_from_json(path=drive_api_id_file, name = drive_api_id_name)
+  # setup both APIs
+  googlesheets4::gs4_auth_configure(client = gdrive_client)
+  googledrive::drive_auth_configure(client = gdrive_client)
+  return(TRUE)
+}
+
 
 #' connect to your google drive account, required set-up for using the google drive packages
 #'
@@ -58,24 +79,20 @@ get_drive_email <- function(drive_email = NULL){
 #' @export
 gdrive_setup <- function(drive_email=NULL, reset=FALSE){
   #TODO check if these are installed (since only 'suggested') and error if not
-  require(googlesheets4)
   require(googledrive)
 
   drive_email <- get_drive_email(drive_email)
-  drive_api_key <- get_api_key()
-  drive_api_id_file <- Sys.getenv('PROJECT_AUTH_FILE')
-  drive_api_id_name='ibeem-commruleR'
 
-  if(!file.exists(drive_id_file)){
-    stop("can't find ID file from Renviron PROJECT_AUTH_FILE")
-  }
 
   if(reset){
     googledrive::drive_deauth()
   }
 
   if(! googledrive::drive_has_token()){
-    googledrive::drive_auth_configure(path=drive_api_id_file, api_key = drive_api_key)
+    if(!gdrive_client_setup()){
+      warning("can't setup google drive/sheets authentication client")
+      return(FALSE)
+    }
     googledrive::drive_auth(email = drive_email,scopes="drive.readonly")
 
     }
@@ -84,66 +101,70 @@ gdrive_setup <- function(drive_email=NULL, reset=FALSE){
 }
 
 
-#' read in google sheet into memory using our shared drive
-#'
-#' reads the first sheet only, and the whole sheet.  Attemtps to load Google packages and log-in if necessary. In
-#' the case there are two sheets with the same name, returns the first one it finds (not ideal! )
-#'
-#' Note This is only for google sheets, not CSVs or other data files.  It assumes the 'share drive' is
-#' is available in the environment
-#'
-#' @param gsheet_name  required file name of the gsheet you need
-#' @return data frame as returned by read.csv, or NULL if there is an issue
-read_gsheet<- function(gsheet_name, shared_drive, verbose="FALSE"){
 
-  # assuming the user wants to load google sheets package and log-in if she wants to read from it
-  if(!gdrive_setup()){
-    warning("there was a problem when setting up google drive authentication, can't open sheet")
-    return(False)
+#' setup authentication for reading google sheet
+#'
+#' this reads from the environment (or Renviron file) to get configuration details
+#' for authenticating to a google sheets service.
+#'
+#' note that this is nearly identical to gdrive_setup but only for google sheets
+#' google sheets has a different API and different permissions in the cloud console to read
+#' @param drive_email
+#' @returns True/False if the authentication/setup was successful
+gsheet_auth_setup<-function(drive_email){
+
+  # don't know if we also have to setup google drive
+  #   if (! gdrive_setup(drive_email)){
+  #   warning("Problem with google drive authentication setup")
+  #   return(NULL)
+  # }
+
+  if(! googledrive::drive_has_token()) {
+
+    drive_email = get_drive_email(drive_email)
+
+    if(!gdrive_client_setup()){
+      warning("can't setup google drive/sheets authentication client")
+      return(FALSE)
+    }
+
+    googlesheets4::gs4_auth(email=drive_email, scopes="drive.readonly")
+
+    if(! googlesheets4::gs4_has_token()) {
+      warning("Problem with google sheets authentication setup")
+      return(FALSE)
+
+    }
+    if(!gdrive_setup(drive_email)){
+      warning("Problem: google sheets authenticated but google drive did not")
+      return(FALSE)
+    }
   }
 
-  if(! sheets_has_token()) {
-    warning("no token for reading from Google drive.  Was there a problem with log-in?  Try gdrive_setup()")
+  return( TRUE)
+
+
+}
+
+#' read data in a google sheet given the sheets URL
+#'
+#' Note This is only for google sheets, not CSVs or other data files.
+
+#' requires Oauth and google cloud console setup
+read_gsheet_by_url<-function(gurl, sheet_tab_number= 1, drive_email = NULL){
+
+  if(!gsheet_auth_setup(drive_email)) {
+    warning("no token for reading Google sheets.  Was there a problem with log-in?  Try gdrive_setup()")
     return( NULL)
   }
 
-  if(verbose){
-    print(paste("searching for ", gsheet_name))
-  }
-
-
-  gs_file<- drive_get(gsheet_name, team_drive = shared_drive)
-
-  if (!single_file(gs_file)){
-    warning("multiple files discovered, selecting the first one on the list!")
-    gs_file <- gs_file[1,]
-  }
-
-  if(verbose){
-    print(paste("reading data from ", gs_file$path))
-  }
-
-  gs_file<- gs_file[1,] # get the first one in case there are duplicates
-
-  gs_data <- read_sheet(gs_file)
-  ### how to read the data from read_sheet
-
-  return(gs_data)
+  sheet_dataframe = googlesheets4::read_sheet(googledrive::as_id(gurl), sheet = sheet_tab_number)
+  return(sheet_dataframe)
 
 }
 
-read_gsheet_url<-function(gurl){
-  ginfo<-googledrive::drive_get(gurl)
-  if('id' %in% names(ginfo)){
-    read_gsheet()
-  }
 
-}
 
-read_gsheet_id<-function(gid){
-  f <- googledrive::drive_get(id=ginfo$id)
-
-}
 #' WIP get time stamp for a particular gfile
 #'
 #' @param gfile a file object from google drive
@@ -153,7 +174,9 @@ gfile_modified_time<-function(gfile){
   ts<- gfile$drive_resource[[1]]$modifiedTime
   return(ts)
 }
-#' download a CSV from the project shared drive and read into memory
+
+
+#' download a CSV file from the project google shared drive and read into memory
 #'
 #' given a CSV filename, find it in our shared drive and read it in.  If there are multiple files
 #' found with the same name on the share drive, throws a warning and reads only the first one
