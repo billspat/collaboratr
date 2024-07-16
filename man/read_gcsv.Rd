@@ -2,7 +2,7 @@
 % Please edit documentation in R/gdrive.R
 \name{read_gcsv}
 \alias{read_gcsv}
-\title{download a CSV from the project shared drive and read into memory}
+\title{download a CSV file from the project google shared drive and read into memory}
 \usage{
 read_gcsv(file_name, shared_drive = NULL, file_path = NULL)
 }

@@ -4,7 +4,7 @@
 \alias{gdrive_setup}
 \title{connect to your google drive account, required set-up for using the google drive packages}
 \usage{
-gdrive_setup(drive_email = NULL)
+gdrive_setup(drive_email = NULL, reset = FALSE)
 }
 \value{
 TRUE if the functions requiring the google R packages complete without error
