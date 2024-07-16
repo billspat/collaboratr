@@ -30,11 +30,46 @@ This R package is part of 3 repositories that support the data entry, validation
 2. commRuler: commRULES data management code for L0 and L0->L1 layer in EDI framework
 3. commRULES-analysis: R code for reproducible data analysis , L1->L2 layers in EDI framework
 
-## Installation
+## Installation - Package
 
 This package uses [renv](https://rstudio.github.io/renv/) to manage the packages you need to install, which creates an `renv.lock` file for you.  
 
 - install RENV: this can go into your R environment used for all packages, so fire up R with now project select and `install.packages('renv')`
 - clone this repository into a [new Rstudio project](https://docs.posit.co/ide/user/ide/guide/code/projects.html) and open it
 - inside the Rstudio project in the R console, `renv::restore()`
+
+## Google Drive Project Setup
+
+Using google drive via MSU seems to require creating a Google Cloud project, enabling the proper
+APIs and and assigning permissions
+
+Note that for safety, this package only reads from google drive and it never writes to google drive.  Therefore it only requests 'read-only' access.  
+
+Full documentation for how to set this up is forthcoming
+
+## Usage
+
+When reading in data sheets, you provide a URL for a datasheet that exists in any folder that you have access to.   The system will attempt to log you into to google drive and requests your permission for this code to access files on your behalf.   
+
+```R
+gurl<- 'https://docs.google.com/spreadsheets/d/1w6sYozjybyd53eeiTdigrRTonteQW2KXUNZNmEhQyM8/edit?gid=0#gid=0'
+study_data<- read_commrules_sheet(gurl)
+```
+
+
+
+### 
+## References
+
+@article{van2021data,
+  title={Data validation infrastructure for R},
+  author={van der Loo, Mark PJ and de Jonge, Edwin},
+  journal={Journal of Statistical Software},
+  year={2021},
+  volume ={97},
+  issue = {10},
+  pages = {1-33},
+  doi={10.18637/jss.v097.i10},
+  url = {https://www.jstatsoft.org/article/view/v097i10}
+}
 
