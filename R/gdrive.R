@@ -146,6 +146,48 @@ gsheet_auth_setup<-function(drive_email){
 
 }
 
+
+#' get a google drive file object given path and share drive
+#'
+#' given a google filepath , find it in our shared drive and read it in.  If there are multiple files
+#' found with the same name on the share drive, throws a warning and reads only the first one
+#' it finds  (which may not be the most recent one!   )
+#'
+#' This is not needed for working with folders/datafiles connected to your computer
+#' via Google Drive Desktop (Mac/Windows), only for reading files directly from google drive.
+#' If you don't have permission to access the share drive it will not work
+#'
+#' @param filepath full name of the file (e.g. myfile.csv ), which could include sub-folder (myfiles/myfile.csv)
+#' @param shared_drive optional name of the shared drive to look in, will read from the environment 'PROJECT_SHARE_DRIVE'
+#' @param drive_path optional standard path for project files, will read from environment 'PROJECT_SHARE_DRIVE_PATH'
+#'
+#' @return a gsfile object from google drive library, useable to read from other gdrive/gsheet functions
+#' @export
+get_gsfile<-function(file_name, shared_drive=NULL, drive_path=NULL){
+
+  shared_drive <- if(!is.null(shared_drive)) shared_drive else Sys.getenv('PROJECT_SHARE_DRIVE')
+  # if( shared_drive == "") {
+  #     warning("no share drive in the environment, please use the shared drive parameter to specify the share drive name")
+  #     return( NULL)
+  #   }
+  # }
+
+  drive_path <- if(!is.null(drive_path)) drive_path else Sys.getenv('PROJECT_SHARE_DRIVE_PATH')
+
+  # load Google packages if not already, and log-in
+  gdrive_setup()
+  if(! googledrive::drive_has_token()) {
+    warning("no token for reading from Google drive.  Was there a problem with log-in?  Please run googledrive::drive_auth()")
+    return( NULL)
+  }
+
+  # retrieve file spec/info from Google drive
+  full_file_path <- paste(drive_path, file_name, sep = "/")
+  gs_file<- googledrive::drive_get(path=full_file_path , shared_drive=shared_drive)
+  return(gs_file)
+
+}
+
 #' read data in a google sheet given the sheets URL
 #'
 #' Note This is only for google sheets, not CSVs or other data files.
@@ -164,6 +206,12 @@ read_gsheet_by_url<-function(gurl, sheet_tab_number= 1, drive_email = NULL){
 }
 
 
+read_gsheet_by_name <- function(sheet_tab_number, drive_email = NULL ){
+
+}
+
+
+
 
 #' WIP get time stamp for a particular gfile
 #'
@@ -176,6 +224,25 @@ gfile_modified_time<-function(gfile){
 }
 
 
+#' remove line 2 from a csv file, used by data-entry for column directions/description.
+#'
+#' this will read all lines of a test file (which can take a long time/memory for a long file),
+#' remove some of the lines by number and write those to disk.   If no new_file_path param
+#' is sent, will overwrite the original file which will be lost
+#' it will write a file with standard POSIX (linux/mac) line endings for now
+#' @param local_file_path path to text file on your disk, relative or absolute
+#' @param line_numbers default 2, 1 number or a vector, range of numbers to exclude (2:5)
+#' @param new_file_path optional new name to write to, by default will use the local_file_path and overwrite
+remove_comment_line<-function(local_file_path, line_numbers = 2, new_file_path = NULL){
+  # set param
+  new_file_path = if(!is.null(new_file_path)) new_file_path else local_file_path
+  filelines = readr::read_lines(local_file_path)
+  filelines <- filelines[-(line_numbers)]
+  readr::write_lines(filelines, file=new_file_path)
+  return(new_file_path)
+
+}
+
 #' download a CSV file from the project google shared drive and read into memory
 #'
 #' given a CSV filename, find it in our shared drive and read it in.  If there are multiple files
@@ -187,31 +254,15 @@ gfile_modified_time<-function(gfile){
 #' to the share drive it will not work
 #'
 #' @param filepath full name of the CSV file (e.g. myfile.csv ) with optional partial path.
-#' @param shared_drive name of the shared drive to look in, defaults to the MSB project drive (2021)
+#' @param shared_drive name of the shared drive to look in, default NULL passed to get_gsfile which which reads path from environment (see get_gsfile)
+#' @param drive_path common project path to use, optional, passed to get_gsfile which reads from environment (see get_gsfile)
+#' @param has_comment_line =TRUE, does the google sheet have comments/directions on line 2 that needs to be stripped
 #'
 #' @return a data.frame as returned by read.csv, no row names.
 #' @export
-read_gcsv<-function(file_name, shared_drive=NULL, file_path=NULL){
+read_gcsv<-function(file_name, shared_drive=NULL, drive_path=NULL, has_comment_line = TRUE){
 
-  shared_drive <- if(is.null(shared_drive)) shared_drive else Sys.getenv('PROJECT_SHARE_DRIVE')
-  # if( shared_drive == "") {
-  #     warning("no share drive in the environment, please use the shared drive parameter to specify the share drive name")
-  #     return( NULL)
-  #   }
-  # }
-
-  file_path <- if(is.null(file_path)) file_path else Sys.getenv('PROJECT_SHARE_DRIVE_PATH')
-
-  # load Google packages if not already, and log-in
-  gdrive_setup()
-  if(! googledrive::drive_has_token()) {
-    warning("no token for reading from Google drive.  Was there a problem with log-in?  Please run googledrive::drive_auth()")
-    return( NULL)
-  }
-
-  # retrieve file spec/info from Google drive
-  full_file_path <- paste(file_name, file_path, sep = "/")
-  gs_file<- googledrive::drive_get(path=full_file_path , shared_drive=shared_drive)
+  gs_file <- get_gsfile(file_name, shared_drive, drive_path)
 
   # check if we found more than one file' not sure if this is the foolproof way to do it
   if( nrow(gs_file) > 1){
@@ -221,9 +272,13 @@ read_gcsv<-function(file_name, shared_drive=NULL, file_path=NULL){
   #TODO check file size before reading in and confirm large files
   local_file <- file.path(tempdir(), gs_file[1,]$name)
 
-  local_file_infos <- googledrive::drive_download(gs_file[1,], path=local_file, overwrite = TRUE)
+  local_file_infos <- googledrive::drive_download(gs_file, path=local_file, type="csv", overwrite = TRUE)
 
-  csvdata<-read.csv(local_file_infos$local_path, row.names = NULL)
+  if(has_comment_line == TRUE){
+    local_file_path <- remove_comment_line(local_file_path= local_file_infos$local_path, line_numbers = 2)
+  }
+
+  csvdata<-read.csv(local_file_path, header = TRUE, row.names = NULL)
   return(csvdata)
 }
 
