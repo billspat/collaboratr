@@ -20,5 +20,6 @@ Imports:
     googlesheets4,
     readr,
     stringr,
-    validate
+    validate,
+    yaml
 VignetteBuilder: knitr
