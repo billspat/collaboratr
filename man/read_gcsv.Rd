@@ -4,10 +4,19 @@
 \alias{read_gcsv}
 \title{download a CSV file from the project google shared drive and read into memory}
 \usage{
-read_gcsv(file_name, shared_drive = NULL, file_path = NULL)
+read_gcsv(
+  file_name,
+  shared_drive = NULL,
+  drive_path = NULL,
+  has_comment_line = TRUE
+)
 }
 \arguments{
-\item{shared_drive}{name of the shared drive to look in, defaults to the MSB project drive (2021)}
+\item{shared_drive}{name of the shared drive to look in, default NULL passed to get_gsfile which which reads path from environment (see get_gsfile)}
+
+\item{drive_path}{common project path to use, optional, passed to get_gsfile which reads from environment (see get_gsfile)}
+
+\item{has_comment_line}{=TRUE, does the google sheet have comments/directions on line 2 that needs to be stripped}
 
 \item{filepath}{full name of the CSV file (e.g. myfile.csv ) with optional partial path.}
 }
