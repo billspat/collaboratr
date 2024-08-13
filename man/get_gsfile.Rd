@@ -4,14 +4,19 @@
 \alias{get_gsfile}
 \title{get a google drive file object given path and share drive}
 \usage{
-get_gsfile(file_name, shared_drive = NULL, drive_path = NULL)
+get_gsfile(
+  file_name_or_url,
+  shared_drive = NULL,
+  drive_path = NULL,
+  drive_email = NULL
+)
 }
 \arguments{
-\item{shared_drive}{optional name of the shared drive to look in, will read from the environment 'PROJECT_SHARE_DRIVE'}
+\item{shared_drive}{optional name of the shared drive to look in, will read from the environment 'PROJECT_SHARE_DRIVE' ignored if URL is sent}
 
-\item{drive_path}{optional standard path for project files, will read from environment 'PROJECT_SHARE_DRIVE_PATH'}
+\item{drive_path}{optional standard path for project files, will read from environment 'PROJECT_SHARE_DRIVE_PATH'; ignored if URL is sent}
 
-\item{filepath}{full name of the file (e.g. myfile.csv ), which could include sub-folder (myfiles/myfile.csv)}
+\item{filepath}{full name of the file (e.g. myfile.csv ), which could include sub-folder (myfiles/myfile.csv) OR google drive URL}
 }
 \value{
 a gsfile object from google drive library, useable to read from other gdrive/gsheet functions

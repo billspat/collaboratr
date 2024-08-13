@@ -2,20 +2,20 @@
 % Please edit documentation in R/validator.R
 \name{read_commrules_sheet}
 \alias{read_commrules_sheet}
-\title{read in datasheets from meta-data analysis of a page}
+\title{read in one tab (only) of  meta-data analysis google sheet}
 \usage{
-read_commrules_sheet(sheeturl, remove_row_one = TRUE, drive_email = NULL)
+read_commrules_sheet(sheet_url, has_comment_line = TRUE, drive_email = NULL)
 }
 \arguments{
-\item{sheeturl}{the url of of the google sheet containing data sheets}
+\item{drive_email}{the email to use for google drive log-in, which is the institution that setup the project}
+
+\item{sheeturl}{the url of of the google sheet - each tab has it's own URL!}
 
 \item{remove_row_one}{datasheets use first row with explanatory text in google sheet, remove if TRUE.  defaults to TRUE}
-
-\item{drive_email}{the email to use for google drive log-in, which is the institution that setup the project}
 }
 \value{
-list with two data frames, named 'biomass' and 'env'
+data frame
 }
 \description{
-read in datasheets from meta-data analysis of a page
+read in one tab (only) of  meta-data analysis google sheet
 }

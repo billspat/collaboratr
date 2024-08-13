@@ -6,6 +6,9 @@
 \usage{
 gsheet_auth_setup(drive_email)
 }
+\arguments{
+\item{drive_email}{your preferred email}
+}
 \value{
 True/False if the authentication/setup was successful
 }

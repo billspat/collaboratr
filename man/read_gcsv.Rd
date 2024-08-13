@@ -5,7 +5,7 @@
 \title{download a CSV file from the project google shared drive and read into memory}
 \usage{
 read_gcsv(
-  file_name,
+  file_name_or_url,
   shared_drive = NULL,
   drive_path = NULL,
   has_comment_line = TRUE
