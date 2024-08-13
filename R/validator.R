@@ -12,31 +12,38 @@ env_validation_file <- 'int/env_validation_rules.yml'
 #' @param drive_email the email to use for google drive log-in, which is the institution that setup the project
 #'
 #' @returns data frame
+#' @export
 read_commrules_sheet<-function(sheet_url, has_comment_line = TRUE, drive_email=NULL){
   gdrive_setup(drive_email = drive_email)
   commrules_df <- read_gcsv(sheet_url, has_comment_line = has_comment_line)
   return(commrules_df)
 }
 
-
+#' validate columns present for biomass data
+#'
+#' @export
 validate_biomass_columns<- function(biomass_data){
   return(  identical(sort(biomass_column_names), sort(names(biomass_data))) )
 }
 
-
+#' validate biomass data
+#'
+#' use the validate package to check a file against the
+#'
+#' @export
 validate_biomass_data<- function(biomass_data, validation_file = biomass_validation_file ){
   biomass_rules <- validate::validator(.file = validation_file)
   validation_results <- validate::confront(biomass_data, biomass_rules)
   summary(validation_results)
 }
 
-
+#' @export
 validate_env_columns<- function(env_data){
   env_columns <- c('env_who','env_date','ID_new','exp_type','biome_type','country','state_city_province','latitude','longitude','coord_units','site','rainshelter','avg_rep_temp_C','avg_rep_ppt_mm','avg_rep_elev_m','year_start','year_end','exp_duration_days','notes')
   return(  identical(sort(env_columns), sort(names(env_data))) )
 }
 
-
+#' @export
 validate_biomass<- function(biomass_df){
   if(! validate_biomass_columns(biomass_df))
     warning("Columns in sheet don't match expected list of columns")

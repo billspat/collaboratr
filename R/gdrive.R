@@ -162,7 +162,6 @@ gsheet_auth_setup<-function(drive_email){
 #' @param drive_path optional standard path for project files, will read from environment 'PROJECT_SHARE_DRIVE_PATH'; ignored if URL is sent
 #'
 #' @return a gsfile object from google drive library, useable to read from other gdrive/gsheet functions
-#' @export
 get_gsfile<-function(file_name_or_url, shared_drive=NULL, drive_path=NULL,drive_email=NULL){
 
   # load Google packages if not already, and log-in
