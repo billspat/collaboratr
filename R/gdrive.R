@@ -289,10 +289,3 @@ read_gcsv<-function( file_name_or_url, shared_drive=NULL, drive_path=NULL, has_c
   return(csvdata)
 }
 
-#' test/example file
-test_gdrive<- function(testcsvname, share){
-  print("this will take a while... as it finds the file 2x (one to get info, one to read")
-  some_data <- read_gcsv(filepath=testcsvname)
-  summary(some_data)
-  return(some_data)
-}
