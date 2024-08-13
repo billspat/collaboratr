@@ -1,6 +1,6 @@
 Package: commruleR
 Title: process 'L0' data for the commRULES projects
-Version: 0.0.0.9000
+Version: 0.0.0.9100
 Authors@R: 
     person("Patrick", "Bills", , "billspat@msu.edu", role = c("aut", "cre"),
            comment = c(ORCID = "YOUR-ORCID-ID"))
@@ -18,5 +18,7 @@ Imports:
     gargle,
     googledrive,
     googlesheets4,
-    readr
+    readr,
+    stringr,
+    validate
 VignetteBuilder: knitr
