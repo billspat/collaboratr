@@ -157,33 +157,41 @@ gsheet_auth_setup<-function(drive_email){
 #' via Google Drive Desktop (Mac/Windows), only for reading files directly from google drive.
 #' If you don't have permission to access the share drive it will not work
 #'
-#' @param filepath full name of the file (e.g. myfile.csv ), which could include sub-folder (myfiles/myfile.csv)
-#' @param shared_drive optional name of the shared drive to look in, will read from the environment 'PROJECT_SHARE_DRIVE'
-#' @param drive_path optional standard path for project files, will read from environment 'PROJECT_SHARE_DRIVE_PATH'
+#' @param filepath full name of the file (e.g. myfile.csv ), which could include sub-folder (myfiles/myfile.csv) OR google drive URL
+#' @param shared_drive optional name of the shared drive to look in, will read from the environment 'PROJECT_SHARE_DRIVE' ignored if URL is sent
+#' @param drive_path optional standard path for project files, will read from environment 'PROJECT_SHARE_DRIVE_PATH'; ignored if URL is sent
 #'
 #' @return a gsfile object from google drive library, useable to read from other gdrive/gsheet functions
 #' @export
-get_gsfile<-function(file_name, shared_drive=NULL, drive_path=NULL){
-
-  shared_drive <- if(!is.null(shared_drive)) shared_drive else Sys.getenv('PROJECT_SHARE_DRIVE')
-  # if( shared_drive == "") {
-  #     warning("no share drive in the environment, please use the shared drive parameter to specify the share drive name")
-  #     return( NULL)
-  #   }
-  # }
-
-  drive_path <- if(!is.null(drive_path)) drive_path else Sys.getenv('PROJECT_SHARE_DRIVE_PATH')
+get_gsfile<-function(file_name_or_url, shared_drive=NULL, drive_path=NULL,drive_email=NULL){
 
   # load Google packages if not already, and log-in
-  gdrive_setup()
+  gdrive_setup(drive_email = drive_email)
+
   if(! googledrive::drive_has_token()) {
     warning("no token for reading from Google drive.  Was there a problem with log-in?  Please run googledrive::drive_auth()")
     return( NULL)
   }
 
-  # retrieve file spec/info from Google drive
-  full_file_path <- paste(drive_path, file_name, sep = "/")
-  gs_file<- googledrive::drive_get(path=full_file_path , shared_drive=shared_drive)
+  if(grep('^https', file_name_or_url)==1){
+    # first param is a url, so ignore all the others and just get the gsfile object
+    gs_file<- googledrive::drive_get(file_name_or_url)
+  } else {
+    # it's a filename, not a url, check the other params
+    shared_drive <- if(!is.null(shared_drive)) shared_drive else Sys.getenv('PROJECT_SHARE_DRIVE')
+    # if( shared_drive == "") {
+    #     warning("no share drive in the environment, please use the shared drive parameter to specify the share drive name")
+    #     return( NULL)
+    #   }
+    # }
+
+    drive_path <- if(!is.null(drive_path)) drive_path else Sys.getenv('PROJECT_SHARE_DRIVE_PATH')
+
+    # retrieve file spec/info from Google drive
+    full_file_path <- paste(drive_path, file_name_or_url, sep = "/")
+    gs_file<- googledrive::drive_get(path=full_file_path , shared_drive=shared_drive)
+  }
+
   return(gs_file)
 
 }
@@ -206,9 +214,7 @@ read_gsheet_by_url<-function(gurl, sheet_tab_number= 1, drive_email = NULL){
 }
 
 
-read_gsheet_by_name <- function(sheet_tab_number, drive_email = NULL ){
 
-}
 
 
 
@@ -260,9 +266,9 @@ remove_comment_line<-function(local_file_path, line_numbers = 2, new_file_path =
 #'
 #' @return a data.frame as returned by read.csv, no row names.
 #' @export
-read_gcsv<-function(file_name, shared_drive=NULL, drive_path=NULL, has_comment_line = TRUE){
+read_gcsv<-function( file_name_or_url, shared_drive=NULL, drive_path=NULL, has_comment_line = TRUE){
 
-  gs_file <- get_gsfile(file_name, shared_drive, drive_path)
+  gs_file <- get_gsfile(file_name_or_url, shared_drive, drive_path)
 
   # check if we found more than one file' not sure if this is the foolproof way to do it
   if( nrow(gs_file) > 1){

@@ -1,0 +1,46 @@
+﻿biomass_type,trt_type,c_spp_name,c_nat_inv,c_#indiv,reponse_var,nutrient_general,nutrient_compound,external_trt,f_spp_name,f_nat_inv,f_#indiv,notes,nutrient_interval_days,spp_who,ext_treatment_mean,nutrient1_mean,nutrient2_mean,nutrient3_mean,nutrient_unit,sample_size,response_mean_unit,response_mean,response_transformation,response_var,response_var_unit,site,spp_biomass,nutrient_addition_duration,ID_new,ext_treatment_unit,spp_date,source
+both,monoculture,,native,3,biomass,N,NO3,NA,Centaurea maculosa,invasive,3,,8,AR,NA,1,,,g,3,g,3.044117647,NA,0.110294118,se,NA,Centaurea maculosa,30,2090,NA,01/07/2024,Figure. 2
+both,mixture,Pseudoroegneria spicata,native,3,biomass,N,NO3,NA,Centaurea maculosa,invasive,3,,8,AR,NA,2,,,g,3,g,2.911764706,NA,0.110294118,se,NA,Centaurea maculosa,30,2090,NA,01/07/2024,Figure. 2
+both,mixture,Pascopyrum smithii,native,3,biomass,N,NO3,NA,Centaurea maculosa,invasive,3,,8,AR,NA,3,,,g,3,g,2.647058824,NA,0.110294118,se,NA,Centaurea maculosa,30,2090,NA,01/07/2024,Figure. 2
+both,monoculture,,native,3,biomass,N,NO3,NA,Centaurea maculosa,invasive,3,,24,AR,NA,1,,,g,3,g,4.014705882,NA,0.198529412,se,NA,Centaurea maculosa,30,2090,NA,01/07/2024,Figure. 2
+both,mixture,Pseudoroegneria spicata,native,3,biomass,N,NO3,NA,Centaurea maculosa,invasive,3,,24,AR,NA,2,,,g,3,g,4.102941176,NA,0.198529412,se,NA,Centaurea maculosa,30,2090,NA,01/07/2024,Figure. 2
+both,mixture,Pascopyrum smithii,native,3,biomass,N,NO3,NA,Centaurea maculosa,invasive,3,,24,AR,NA,3,,,g,3,g,3.308823529,NA,0.198529412,se,NA,Centaurea maculosa,30,2090,NA,01/07/2024,Figure. 2
+both,monoculture,,native,3,biomass,N,NO3,NA,Centaurea maculosa,invasive,3,,72,AR,NA,1,,,g,3,g,4.808823529,NA,0.286764706,se,NA,Centaurea maculosa,30,2090,NA,01/07/2024,Figure. 2
+both,mixture,Pseudoroegneria spicata,native,3,biomass,N,NO3,NA,Centaurea maculosa,invasive,3,,72,AR,NA,2,,,g,3,g,5.691176471,NA,0.286764706,se,NA,Centaurea maculosa,30,2090,NA,01/07/2024,Figure. 2
+both,mixture,Pascopyrum smithii,native,3,biomass,N,NO3,NA,Centaurea maculosa,invasive,3,,72,AR,NA,3,,,g,3,g,4.323529412,NA,0.286764706,se,NA,Centaurea maculosa,30,2090,NA,01/07/2024,Figure. 2
+both,monoculture,Pseudoroegneria spicata,native,3,biomass,N,NO3,NA,Centaurea maculosa,invasive,3,,8,AR,NA,1,,,g,3,g,1.5,NA,0.286764706,se,NA,Pseudoroegneria spicata,30,2090,NA,01/07/2024,Figure. 2
+both,mixture,Pseudoroegneria spicata,native,3,biomass,N,NO3,NA,Centaurea maculosa,invasive,3,,8,AR,NA,2,,,g,3,g,1.102941176,NA,0.286764706,se,NA,Pseudoroegneria spicata,30,2090,NA,01/07/2024,Figure. 2
+both,monoculture,Pseudoroegneria spicata,native,3,biomass,N,NO3,NA,Centaurea maculosa,invasive,3,,24,AR,NA,3,,,g,3,g,2.25,NA,0.022058824,se,NA,Pseudoroegneria spicata,30,2090,NA,01/07/2024,Figure. 2
+both,mixture,Pseudoroegneria spicata,native,3,biomass,N,NO3,NA,Centaurea maculosa,invasive,3,,24,AR,NA,1,,,g,3,g,2.25,NA,0.022058824,se,NA,Pseudoroegneria spicata,30,2090,NA,01/07/2024,Figure. 2
+both,monoculture,Pseudoroegneria spicata,native,3,biomass,N,NO3,NA,Centaurea maculosa,invasive,3,,72,AR,NA,2,,,g,3,g,1.5,NA,0.507352941,se,NA,Pseudoroegneria spicata,30,2090,NA,01/07/2024,Figure. 2
+both,mixture,Pseudoroegneria spicata,native,3,biomass,N,NO3,NA,Centaurea maculosa,invasive,3,,72,AR,NA,3,,,g,3,g,2.911764706,NA,0.507352941,se,NA,Pseudoroegneria spicata,30,2090,NA,01/07/2024,Figure. 2
+both,monoculture,Pascopyrum smithii,native,3,biomass,N,NO3,NA,Centaurea maculosa,invasive,3,,8,AR,NA,1,,,g,3,g,1.941176471,NA,0.132352941,se,NA,Pascopyrum smithii,30,2090,NA,01/07/2024,Figure. 2
+both,mixture,Pascopyrum smithii,native,3,biomass,N,NO3,NA,Centaurea maculosa,invasive,3,,8,AR,NA,2,,,g,3,g,1.852941176,NA,0.132352941,se,NA,Pascopyrum smithii,30,2090,NA,01/07/2024,Figure. 2
+both,monoculture,Pascopyrum smithii,native,3,biomass,N,NO3,NA,Centaurea maculosa,invasive,3,,24,AR,NA,3,,,g,3,g,2.338235294,NA,0.132352941,se,NA,Pascopyrum smithii,30,2090,NA,01/07/2024,Figure. 2
+both,mixture,Pascopyrum smithii,native,3,biomass,N,NO3,NA,Centaurea maculosa,invasive,3,,24,AR,NA,2,,,g,3,g,2.161764706,NA,0.132352941,se,NA,Pascopyrum smithii,30,2090,NA,01/07/2024,Figure. 2
+both,monoculture,Pascopyrum smithii,native,3,biomass,N,NO3,NA,Centaurea maculosa,invasive,3,,72,AR,NA,3,,,g,3,g,4.764705882,NA,0.308823529,se,NA,Pascopyrum smithii,30,2090,NA,01/07/2024,Figure. 2
+both,mixture,Pascopyrum smithii,native,3,biomass,N,NO3,NA,Centaurea maculosa,invasive,3,,72,AR,NA,1,,,g,3,g,2.470588235,NA,0.308823529,se,NA,Pascopyrum smithii,30,2090,NA,01/07/2024,Figure. 2
+both,monoculture,,native,3,biomass,N,NO3,NA,Centaurea maculosa,invasive,3,,8,AR,NA,2,,,g,3,g,0.706701031,NA,0.110294118,se,NA,Centaurea maculosa,30,2090,NA,01/07/2024,Figure. 2
+both,mixture,Pseudoroegneria spicata,native,3,biomass,N,NO3,NA,Centaurea maculosa,invasive,3,,8,AR,NA,3,,,g,3,g,0.669587629,NA,0.110294118,se,NA,Centaurea maculosa,30,2090,NA,01/07/2024,Figure. 2
+both,mixture,Pascopyrum smithii,native,3,biomass,N,NO3,NA,Centaurea maculosa,invasive,3,,8,AR,NA,1,,,g,3,g,0.669587629,NA,0.110294118,se,NA,Centaurea maculosa,30,2090,NA,01/07/2024,Figure. 2
+both,monoculture,,native,3,biomass,N,NO3,NA,Centaurea maculosa,invasive,3,,24,AR,NA,2,,,g,3,g,0.700515464,NA,0.198529412,se,NA,Centaurea maculosa,30,2090,NA,01/07/2024,Figure. 2
+both,mixture,Pseudoroegneria spicata,native,3,biomass,N,NO3,NA,Centaurea maculosa,invasive,3,,24,AR,NA,3,,,g,3,g,0.620103093,NA,0.198529412,se,NA,Centaurea maculosa,30,2090,NA,01/07/2024,Figure. 2
+both,mixture,Pascopyrum smithii,native,3,biomass,N,NO3,NA,Centaurea maculosa,invasive,3,,24,AR,NA,1,,,g,3,g,0.690206186,NA,0.198529412,se,NA,Centaurea maculosa,30,2090,NA,01/07/2024,Figure. 2
+both,monoculture,,native,3,biomass,N,NO3,NA,Centaurea maculosa,invasive,3,,72,AR,NA,2,,,g,3,g,0.657216495,NA,0.286764706,se,NA,Centaurea maculosa,30,2090,NA,01/07/2024,Figure. 2
+both,mixture,Pseudoroegneria spicata,native,3,biomass,N,NO3,NA,Centaurea maculosa,invasive,3,,72,AR,NA,3,,,g,3,g,0.59742268,NA,0.286764706,se,NA,Centaurea maculosa,30,2090,NA,01/07/2024,Figure. 2
+both,mixture,Pascopyrum smithii,native,3,biomass,N,NO3,NA,Centaurea maculosa,invasive,3,,72,AR,NA,1,,,g,3,g,0.618041237,NA,0.286764706,se,NA,Centaurea maculosa,30,2090,NA,01/07/2024,Figure. 2
+both,monoculture,Pseudoroegneria spicata,native,3,biomass,N,NO3,NA,Centaurea maculosa,invasive,3,,8,AR,NA,2,,,g,3,g,0.667525773,NA,0.286764706,se,NA,Pseudoroegneria spicata,30,2090,NA,01/07/2024,Figure. 2
+both,mixture,Pseudoroegneria spicata,native,3,biomass,N,NO3,NA,Centaurea maculosa,invasive,3,,8,AR,NA,3,,,g,3,g,0.59742268,NA,0.286764706,se,NA,Pseudoroegneria spicata,30,2090,NA,01/07/2024,Figure. 2
+both,monoculture,Pseudoroegneria spicata,native,3,biomass,N,NO3,NA,Centaurea maculosa,invasive,3,,24,AR,NA,1,,,g,3,g,0.665463918,NA,0.022058824,se,NA,Pseudoroegneria spicata,30,2090,NA,01/07/2024,Figure. 2
+both,mixture,Pseudoroegneria spicata,native,3,biomass,N,NO3,NA,Centaurea maculosa,invasive,3,,24,AR,NA,2,,,g,3,g,0.646907216,NA,0.022058824,se,NA,Pseudoroegneria spicata,30,2090,NA,01/07/2024,Figure. 2
+both,monoculture,Pseudoroegneria spicata,native,3,biomass,N,NO3,NA,Centaurea maculosa,invasive,3,,72,AR,NA,3,,,g,3,g,0.634536082,NA,0.507352941,se,NA,Pseudoroegneria spicata,30,2090,NA,01/07/2024,Figure. 2
+both,mixture,Pseudoroegneria spicata,native,3,biomass,N,NO3,NA,Centaurea maculosa,invasive,3,,72,AR,NA,1,,,g,3,g,0.585051546,NA,0.507352941,se,NA,Pseudoroegneria spicata,30,2090,NA,01/07/2024,Figure. 2
+both,monoculture,Pascopyrum smithii,native,3,biomass,N,NO3,NA,Centaurea maculosa,invasive,3,,8,AR,NA,2,,,g,3,g,0.56443299,NA,0.132352941,se,NA,Pascopyrum smithii,30,2090,NA,01/07/2024,Figure. 2
+both,mixture,Pascopyrum smithii,native,3,biomass,N,NO3,NA,Centaurea maculosa,invasive,3,,8,AR,NA,3,,,g,3,g,0.605670103,NA,0.132352941,se,NA,Pascopyrum smithii,30,2090,NA,01/07/2024,Figure. 2
+both,monoculture,Pascopyrum smithii,native,3,biomass,N,NO3,NA,Centaurea maculosa,invasive,3,,24,AR,NA,1,,,g,3,g,0.587113402,NA,0.132352941,se,NA,Pascopyrum smithii,30,2090,NA,01/07/2024,Figure. 2
+both,mixture,Pascopyrum smithii,native,3,biomass,N,NO3,NA,Centaurea maculosa,invasive,3,,24,AR,NA,2,,,g,3,g,0.595360825,NA,0.132352941,se,NA,Pascopyrum smithii,30,2090,NA,01/07/2024,Figure. 2
+both,monoculture,Pascopyrum smithii,native,3,biomass,N,NO3,NA,Centaurea maculosa,invasive,3,,72,AR,NA,3,,,g,3,g,0.593298969,NA,0.308823529,se,NA,Pascopyrum smithii,30,2090,NA,01/07/2024,Figure. 2
+both,mixture,Pascopyrum smithii,native,3,biomass,N,NO3,NA,Centaurea maculosa,invasive,3,,72,AR,NA,3,,,g,3,g,0.552061856,NA,0.308823529,se,NA,Pascopyrum smithii,30,2090,NA,01/07/2024,Figure. 2
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,

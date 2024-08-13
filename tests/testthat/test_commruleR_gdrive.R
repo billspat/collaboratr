@@ -14,7 +14,7 @@ test_that("can get gs file spec", {
   test_drive_path <- 'CommAssemblyRULES/data/L0/L0_InProgress'
   test_drive_file <-'279'
   shared_drive = Sys.getenv('PROJECT_SHARE_DRIVE')
-  result <- get_gsfile(file_name=test_drive_file, shared_drive=shared_drive, drive_path=test_drive_path)
+  result <- get_gsfile(file_name_or_url=test_drive_file, shared_drive=shared_drive, drive_path=test_drive_path)
   expect_true(!is.null(result))
   # todo: use regex test, which I can find that returns the whole string
   expect_type(googledrive::as_id(result), "character")
@@ -29,17 +29,7 @@ test_that("can download_csv_file", {
   test_drive_path <- 'CommAssemblyRULES/data/L0/L0_InProgress'
   test_drive_file <-'279'
   shared_drive = Sys.getenv('PROJECT_SHARE_DRIVE')
-  result <-read_gcsv(file_name=test_drive_file, shared_drive=shared_drive, drive_path=test_drive_path)
+  result <-read_gcsv(file_name_or_url =test_drive_file, shared_drive=shared_drive, drive_path=test_drive_path)
   expect_true(!is.null(result))
 })
 
-test_that("can read gsheet", {
-  result = gdrive_setup()
-  expect_true(result)
-
-  test_drive_path <- 'CommAssemblyRULES/data/L0/L0_InProgress'
-  test_drive_file <-'279'
-  shared_drive = Sys.getenv('PROJECT_SHARE_DRIVE')
-
-
-})
