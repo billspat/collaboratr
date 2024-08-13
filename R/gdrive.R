@@ -109,7 +109,7 @@ gdrive_setup <- function(drive_email=NULL, reset=FALSE){
 #'
 #' note that this is nearly identical to gdrive_setup but only for google sheets
 #' google sheets has a different API and different permissions in the cloud console to read
-#' @param drive_email
+#' @param drive_email your preferred email
 #' @returns True/False if the authentication/setup was successful
 gsheet_auth_setup<-function(drive_email){
 
@@ -173,7 +173,7 @@ get_gsfile<-function(file_name_or_url, shared_drive=NULL, drive_path=NULL,drive_
     return( NULL)
   }
 
-  if(grep('^https', file_name_or_url)==1){
+  if(grepl('^https', file_name_or_url)){
     # first param is a url, so ignore all the others and just get the gsfile object
     gs_file<- googledrive::drive_get(file_name_or_url)
   } else {
@@ -282,9 +282,11 @@ read_gcsv<-function( file_name_or_url, shared_drive=NULL, drive_path=NULL, has_c
 
   if(has_comment_line == TRUE){
     local_file_path <- remove_comment_line(local_file_path= local_file_infos$local_path, line_numbers = 2)
+  } else {
+    local_file_path <- local_file_infos$local_path
   }
 
-  csvdata<-read.csv(local_file_path, header = TRUE, row.names = NULL)
+  csvdata<-readr::read_csv(file = local_file_path)  # (local_file_path, header = TRUE, row.names = NULL)
   return(csvdata)
 }
 
