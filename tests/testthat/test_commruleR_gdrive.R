@@ -1,4 +1,7 @@
 #' test_commruleR_gdrive.R
+test_new_id <- 1943
+
+test_url <- "https://docs.google.com/spreadsheets/d/1-eMIuFa0d8MyUOzwnJ6nffa4wa4ImDwut6Z5SIqOIPk/edit?gid=0#gid=0"
 
 test_that("tests work", {
   expect_true(TRUE)
@@ -11,7 +14,6 @@ test_that("can setup auth to google drive", {
 })
 
 test_that("can get gs file spec from url", {
-  test_url <- "https://docs.google.com/spreadsheets/d/1qccS4Y_UCJrrZdqy6lbPELJ8ZOM4mclR2vg4IWIXbPo/edit?gid=0#gid=0"
   result <- get_gsfile(file_name_or_url=test_url)
   expect_true(!is.null(result))
   # todo: use regex test, which I can find that returns the whole string
@@ -33,7 +35,7 @@ test_that("can get gs file spec", {
 
   # check that the google drive id is just alpha number using str_extract output having same length as id
   file_id = googledrive::as_id(result)
-  rematch <- stringr::str_extract( file_id, stringr::regex('[:alnum:]*'))
+  rematch <- stringr::str_extract( file_id, stringr::regex('[a-zA-Z0-9\\-]*'))
   expect_equal(nchar(file_id), nchar(rematch))
 })
 
