@@ -2,7 +2,7 @@
 #' biomass columns
 #'
 #' @export
-biomass_column_names <- c("spp_who", "spp_date", "ID_new", "source", "external_trt", "trt_type", "reponse_var", "site", "spp_biomass", "f_spp_name", "f_nat_inv", "f_.indiv", "c_spp_name", "c_nat_inv", "c_.indiv", "biomass_type", "response_mean", "response_transformation", "response_mean_unit", "response_var", "response_var_unit", "sample_size", "nutrient_general", "nutrient_compound", "nutrient1_mean", "nutrient2_mean", "nutrient3_mean", "nutrient_unit", "nutrient_interval_days", "nutrient_addition_duration", "ext_treatment_mean", "ext_treatment_unit", "notes")
+biomass_column_names <- c("spp_who", "spp_date", "ID_new", "source", "external_trt", "trt_type", "reponse_var", "site", "spp_biomass", "f_spp_name", "f_nat_inv", "f_num_indiv", "c_spp_name", "c_nat_inv", "c_num_indiv", "biomass_type", "response_mean", "response_transformation", "response_mean_unit", "response_var", "response_var_unit", "sample_size", "nutrient_general", "nutrient_compound", "nutrient1_mean", "nutrient2_mean", "nutrient3_mean", "nutrient_unit", "nutrient_interval_days", "nutrient_addition_duration", "ext_treatment_mean", "ext_treatment_unit", "notes")
 
 # #' default file with validation rules for biomass data
 # #'
