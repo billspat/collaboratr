@@ -23,8 +23,8 @@ test_that("can get gs file spec from url", {
 })
 
 test_that("can get gs file spec", {
-  test_drive_path <- 'CommAssemblyRULES/data/L0/L0_InProgress'
-  test_drive_file <-'279'
+  test_drive_path <- 'CommAssemblyRULES'
+  test_drive_file <-'Year Mapping'
   shared_drive = Sys.getenv('PROJECT_SHARE_DRIVE')
   result <- get_gsfile(file_name_or_url=test_drive_file, shared_drive=shared_drive, drive_path=test_drive_path)
   expect_true(!is.null(result))
@@ -38,8 +38,8 @@ test_that("can get gs file spec", {
 })
 
 test_that("can download_csv_file", {
-  test_drive_path <- 'CommAssemblyRULES/data/L0/L0_InProgress'
-  test_drive_file <-'279'
+  test_drive_path <- 'CommAssemblyRULES'
+  test_drive_file <- 'Year Mapping'
   shared_drive = Sys.getenv('PROJECT_SHARE_DRIVE')
   result <-read_gcsv(file_name_or_url =test_drive_file, shared_drive=shared_drive, drive_path=test_drive_path)
   expect_true(!is.null(result))
