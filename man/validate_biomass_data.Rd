@@ -4,7 +4,7 @@
 \alias{validate_biomass_data}
 \title{validate biomass data}
 \usage{
-validate_biomass_data(biomass_data, validation_file = biomass_validation_file)
+validate_biomass_data(biomass_data, validation_file = NULL)
 }
 \description{
 use the validate package to check a file against the

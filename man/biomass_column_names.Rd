@@ -3,7 +3,7 @@
 \docType{data}
 \name{biomass_column_names}
 \alias{biomass_column_names}
-\title{constants for validation}
+\title{biomass columns}
 \format{
 An object of class \code{character} of length 33.
 }
@@ -11,6 +11,6 @@ An object of class \code{character} of length 33.
 biomass_column_names
 }
 \description{
-constants for validation
+biomass columns
 }
 \keyword{datasets}
