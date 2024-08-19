@@ -7,7 +7,7 @@
 read_gsheet_by_url(
   gurl,
   sheet_tab_number = 1,
-  has_comment_line = TRUE,
+  has_description_line = TRUE,
   drive_email = NULL
 )
 }
@@ -16,7 +16,7 @@ read_gsheet_by_url(
 
 \item{sheet_tab_number}{optional the number of the tab (1, 2), defaults to 1}
 
-\item{has_comment_line}{does the sheet have row 2 as description of data, if TRUE (default), remove it}
+\item{has_description_line}{does the sheet have row 2 as description of data, if TRUE (default), remove it}
 
 \item{drive_email}{optional drive email, required if you have not already logged in or don't have it set in Env.  See gdrive_setup()}
 }

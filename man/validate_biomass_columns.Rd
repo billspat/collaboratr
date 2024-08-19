@@ -6,6 +6,9 @@
 \usage{
 validate_biomass_columns(biomass_data)
 }
+\arguments{
+\item{biomass_data}{data frame of biomass data from commecologyRules}
+}
 \description{
 validate columns present for biomass data
 }

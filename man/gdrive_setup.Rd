@@ -6,6 +6,11 @@
 \usage{
 gdrive_setup(drive_email = NULL, reset = FALSE)
 }
+\arguments{
+\item{drive_email}{email to be used for google drive.  Reads from env var, see get_drive_email}
+
+\item{reset}{boolean whether to start over and re-authorize}
+}
 \value{
 TRUE if the functions requiring the google R packages complete without error
 }

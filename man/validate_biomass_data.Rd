@@ -6,6 +6,11 @@
 \usage{
 validate_biomass_data(biomass_data, validation_file = NULL)
 }
+\arguments{
+\item{biomass_data}{dataframe of biomass data}
+
+\item{validation_file}{optional file with validation rules in it.}
+}
 \description{
 use the validate package to check a file against the
 }

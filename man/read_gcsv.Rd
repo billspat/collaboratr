@@ -27,8 +27,6 @@ a data.frame as returned by read.csv, no row names.
 given a CSV filename, find it in our shared drive and read it in.  If there are multiple files
 found with the same name on the share drive, throws a warning and reads only the first one
 it finds  (which may not be the most recent one!   )
-}
-\details{
 This is not needed for working with folders/datafiles connected to your computer
 via Google Drive Desktop (Mac/Windows), only for reading files directly.  If you don't have access
 to the share drive it will not work
