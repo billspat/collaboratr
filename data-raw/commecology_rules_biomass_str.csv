@@ -1,0 +1,34 @@
+"col_name","col_description","data_str","example"
+"spp_who","initials of who entered the data","factor","AR, LP, AT, AMB"
+"spp_date","when data was entered (dd/mm/yyyy)","character",NA
+"ID_new","unique ID for each reference; column used to merge to all other tables","factor","2000"
+"source","where in the paper one extracted such information","character","Fig. 1"
+"external_trt","external treatment applied to the nutrient treatment (e.g, water, CO2, parasites)","factor","CO2"
+"trt_type","alone, monoculture, mixture","factor","alone, monoculture, mixture"
+"reponse_var","define which response variable data is added; e.g., biomass, sla, root:shoot","factor",NA
+"site","site of study, if there are multiple","character",NA
+"spp_biomass","specify which species response data is being entered for","factor","50"
+"f_spp_name","focal plant genus and species","factor",NA
+"f_nat_inv","focal plant is native or invasive or na","factor",NA
+"f_num_indiv","focal plant number of individuals","numeric",NA
+"c_spp_name","competitior plant genus and species","factor",NA
+"c_nat_inv","competitior plant is native or invasive or na","factor",NA
+"c_num_indiv","competitior plant number of individuals; if multiple comp spp, add # of indiv per spp separated by ;","numeric",NA
+"biomass_type","AGB + BGB or AGB or BGB or unclear or NA [if response var other than biomass]","factor","AGB + BGB; AGB; BGB; unclear; NA"
+"response_mean","response value of plant species at specific nutrient value","numeric",NA
+"response_transformation","response value of plant species at specific nutrient value","character",NA
+"response_mean_unit","response unit of plant species at specific nutrient value.","factor",NA
+"response_var","response variance (value)","numeric",NA
+"response_var_unit","response variance unit e.g., se, sd, ci","factor","se; sd; ci"
+"sample_size","number of replicates e.g., no of pots, plots, transects","numeric",NA
+"nutrient_general","e.g, N; P; K etc [use ; to separate words]","factor","N; P; K"
+"nutrient_compound","e.g, NO3; KHPO4 [use ; to separate words]","factor","NO3; KHPO4"
+"nutrient1_mean","mean value of nutrient added","numeric","23"
+"nutrient2_mean","mean value of nutrient added","numeric","30"
+"nutrient3_mean","mean value of nutrient added","numeric","1"
+"nutrient_unit","mg or g","factor","mg"
+"nutrient_interval_days","how frequently nutrient was added in days, 1 or 4 or 15 or 30 etc","numeric","15"
+"nutrient_addition_duration","total duration of nutrient addition (in days)","numeric",NA
+"ext_treatment_mean","mean value of external treatment","numeric",NA
+"ext_treatment_unit","unit of mean value of external treatment","factor",NA
+"notes","general notes, as necessary [no commas!]","character",NA

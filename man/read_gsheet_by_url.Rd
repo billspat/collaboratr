@@ -2,11 +2,32 @@
 % Please edit documentation in R/gdrive.R
 \name{read_gsheet_by_url}
 \alias{read_gsheet_by_url}
-\title{read data in a google sheet given the sheets URL}
+\title{read data in a google sheet from a URL and tab number}
 \usage{
-read_gsheet_by_url(gurl, sheet_tab_number = 1, drive_email = NULL)
+read_gsheet_by_url(
+  gurl,
+  sheet_tab_number = 1,
+  has_comment_line = TRUE,
+  drive_email = NULL
+)
+}
+\arguments{
+\item{gurl}{url of a google sheet (and only a google sheet, not doc)}
+
+\item{sheet_tab_number}{optional the number of the tab (1, 2), defaults to 1}
+
+\item{has_comment_line}{does the sheet have row 2 as description of data, if TRUE (default), remove it}
+
+\item{drive_email}{optional drive email, required if you have not already logged in or don't have it set in Env.  See gdrive_setup()}
+}
+\value{
+data frame with contents of the tab
 }
 \description{
 Note This is only for google sheets, not CSVs or other data files.
+this can read either type of data sheet (e.g. either tab) and returns th
+To remove the 2nd "description" row, it downloads as CSV, removes the line, and reads back in
+}
+\details{
 requires Oauth and google cloud console setup
 }

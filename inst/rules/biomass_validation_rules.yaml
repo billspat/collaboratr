@@ -80,7 +80,7 @@ rules:
   meta:
     language: validate 1.1.5
     severity: error
-- expr: in_range(response_mean, min=0, max=150))
+- expr: in_range(response_mean, min=0, max=150)
   name: response_mean_range
   label: 'response mean zero to max 150'
   description: ''
