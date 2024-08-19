@@ -75,14 +75,14 @@ gdrive_client_setup <- function(){
 #' This setup is not needed for working with folders/datafiles connected to your computer
 #' via Google Drive Desktop (Mac/Windows), only for reading files directly
 #'
-#' @return TRUE if the functions requiring the google R packages complete without error
+#' @param drive_email email to be used for google drive.  Reads from env var, see get_drive_email
+#' @param reset boolean whether to start over and re-authorize
+#' @returns TRUE if the functions requiring the google R packages complete without error
 #' @export
 gdrive_setup <- function(drive_email=NULL, reset=FALSE){
   #TODO check if these are installed (since only 'suggested') and error if not
-  require(googledrive)
 
   drive_email <- get_drive_email(drive_email)
-
 
   if(reset){
     googledrive::drive_deauth()
@@ -105,12 +105,13 @@ gdrive_setup <- function(drive_email=NULL, reset=FALSE){
 #' setup authentication for reading google sheet
 #'
 #' this reads from the environment (or Renviron file) to get configuration details
-#' for authenticating to a google sheets service.
-#'
+#' for authenticating to a google sheets service
 #' note that this is nearly identical to gdrive_setup but only for google sheets
 #' google sheets has a different API and different permissions in the cloud console to read
-#' @param drive_email your preferred email
+
+#' @param drive_email your preferred email, can be read from environment, set get_drive_email
 #' @returns True/False if the authentication/setup was successful
+#' @export
 gsheet_auth_setup<-function(drive_email){
 
   # don't know if we also have to setup google drive
@@ -195,26 +196,59 @@ get_gsfile<-function(file_name_or_url, shared_drive=NULL, drive_path=NULL,drive_
 
 }
 
-#' read data in a google sheet given the sheets URL
+#' read data in a google sheet from a URL and tab number
 #'
 #' Note This is only for google sheets, not CSVs or other data files.
-
+#' this can read either type of data sheet (e.g. either tab) and returns th
+#' To remove the 2nd "description" row, it downloads as CSV, removes the line, and reads back in
+#'
 #' requires Oauth and google cloud console setup
-read_gsheet_by_url<-function(gurl, sheet_tab_number= 1, drive_email = NULL){
+#' @param gurl url of a google sheet (and only a google sheet, not doc)
+#' @param sheet_tab_number optional the number of the tab (1, 2), defaults to 1
+#' @param has_description_line does the sheet have row 2 as description of data, if TRUE (default), remove it
+#' @param drive_email optional drive email, required if you have not already logged in or don't have it set in Env.  See gdrive_setup()
+#' @returns data frame with contents of the tab
+#' @export
+read_gsheet_by_url<-function(gurl, sheet_tab_number= 1, has_description_line = TRUE, drive_email = NULL){
+
+  gs_file <- get_gsfile(gurl)
+
+  # check if we found more than one file' not sure if this is the foolproof way to do it
+  if( nrow(gs_file) > 1){
+    warning("multiple files discovered, can't read from URL")
+    return(NA)
+  }
+
+  #TODO check file size before reading in and confirm large files
 
   if(!gsheet_auth_setup(drive_email)) {
     warning("no token for reading Google sheets.  Was there a problem with log-in?  Try gdrive_setup()")
     return( NULL)
   }
 
-  sheet_dataframe = googlesheets4::read_sheet(googledrive::as_id(gurl), sheet = sheet_tab_number)
-  return(sheet_dataframe)
+  # to allow for column re-ordering, get the names from the sheet directly, rather than data dictionary
+
+  if(has_description_line == TRUE){
+    # the
+    # read the sheet just to get the column names
+    temp_dataframe <- googlesheets4::read_sheet(googledrive::as_id(gurl), sheet = sheet_tab_number)
+    col_names <- names(temp_dataframe)
+    rm(temp_dataframe)
+    # read in but skip header and row 2 with text description
+    # this df has no col names but will most likley have the correct types
+    df <- googlesheets4::read_sheet(googledrive::as_id(gurl), sheet = sheet_tab_number, col_names = FALSE, skip=2)
+    names(df)<- col_names
+
+  } else {
+    # no description row , just read it in
+    df<- googlesheets4::read_sheet(googledrive::as_id(gurl), sheet = sheet_tab_number)
+  }
+
+  #TODO transform numeric columns
+
+  return(df)
 
 }
-
-
-
-
 
 
 
@@ -253,7 +287,6 @@ remove_comment_line<-function(local_file_path, line_numbers = 2, new_file_path =
 #' given a CSV filename, find it in our shared drive and read it in.  If there are multiple files
 #' found with the same name on the share drive, throws a warning and reads only the first one
 #' it finds  (which may not be the most recent one!   )
-#'
 #' This is not needed for working with folders/datafiles connected to your computer
 #' via Google Drive Desktop (Mac/Windows), only for reading files directly.  If you don't have access
 #' to the share drive it will not work
@@ -262,8 +295,7 @@ remove_comment_line<-function(local_file_path, line_numbers = 2, new_file_path =
 #' @param shared_drive name of the shared drive to look in, default NULL passed to get_gsfile which which reads path from environment (see get_gsfile)
 #' @param drive_path common project path to use, optional, passed to get_gsfile which reads from environment (see get_gsfile)
 #' @param has_comment_line =TRUE, does the google sheet have comments/directions on line 2 that needs to be stripped
-#'
-#' @return a data.frame as returned by read.csv, no row names.
+#' @returns a data.frame as returned by read.csv, no row names.
 #' @export
 read_gcsv<-function( file_name_or_url, shared_drive=NULL, drive_path=NULL, has_comment_line = TRUE){
 
