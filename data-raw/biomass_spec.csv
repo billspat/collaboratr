@@ -1,0 +1,34 @@
+col_name,col_description,col_type,example
+spp_who,initials of who entered the data,character,"AR, LP, AT, AMB"
+spp_date,when data was entered (dd/mm/yyyy),character,30/7/2024
+ID_new,"unique ID for each reference; column used to merge to all other tables, not more than 1 factor",factor,479
+source,where in the paper one extracted such information,character,Fig. 1
+external_trt,"external treatment applied to the nutrient treatment (e.g, water, CO2, parasites)",factor,CO2
+trt_type,"alone, monoculture, mixture",factor,"alone, monoculture, mixture"
+reponse_var,"define which response variable data is added; e.g., biomass, sla, root:shoot",factor,
+site,"site of study, if there are multiple, or just ""main"" if one site. ",character,"""main""; or names of multiple sites"
+spp_biomass,specify which species response data is being entered for ,factor,50
+f_spp_name,focal plant genus and species,factor,
+f_nat_inv,focal plant is native or invasive or na,factor,
+f_num_indiv,focal plant number of individuals,integer,
+c_spp_name,competitior plant genus and species,factor,
+c_nat_inv,competitior plant is native or invasive or na,factor,
+c_num_indiv,"competitior plant number of individuals; if multiple comp spp, add # of indiv per spp separated by ;",integer,
+biomass_type,AGB + BGB or AGB or BGB or unclear or NA [if response var other than biomass],factor,AGB + BGB; AGB; BGB; unclear; NA
+response_mean,response value of plant species at specific nutrient value,double,
+response_transformation,response value of plant species at specific nutrient value,character,
+response_mean_unit,response unit of plant species at specific nutrient value.,factor,not more than 5 factor levels
+response_var,response variance (value),double,
+response_var_unit,"response variance unit e.g., se, sd, ci",factor,se; sd; ci
+sample_size,"number of replicates e.g., no of pots, plots, transects",double,
+nutrient_general,"e.g, N; P; K etc [use ; to separate words]",factor,N; P; K
+nutrient_compound,"e.g, NO3; KHPO4 [use ; to separate words]",factor,NO3; KHPO4
+nutrient1_mean,mean value of nutrient added,double,0 - 1000
+nutrient2_mean,mean value of nutrient added,double,0 - 1000
+nutrient3_mean,mean value of nutrient added,double,0 - 1000
+nutrient_unit,mg or g ,factor,mg
+nutrient_interval_days,"how frequently nutrient was added in days, 1 or 4 or 15 or 30 etc",integer,0 - 400
+nutrient_addition_duration,total duration of nutrient addition (in days),integer,0 - 9215
+ext_treatment_mean,mean value of external treatment,double,1
+ext_treatment_unit,unit of mean value of external treatment,factor,3
+notes,"general notes, as necessary, no commas",character,
