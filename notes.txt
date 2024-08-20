@@ -1,0 +1,15 @@
+Column Definitions that matchs readr :
+
+The for each type "type", the readr col specification function is "col_type()"
+
+- logical [l]: containing only T, F, TRUE or FALSE.
+- integer [i], integers.
+- double [d]: doubles.
+- character [c]: everything else.
+- factor(levels, ordered) [f]: a fixed set of values.
+- date(format = "") [D]: with the locale's date_format. options format
+- time(format = "") [t]: with the locale's time_format.
+- datetime(format = "") [T]: ISO8601 date times
+- number [n], numbers containing the grouping_mark
+
+
