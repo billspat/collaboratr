@@ -284,12 +284,13 @@ remove_comment_line<-function(local_file_path, line_numbers = 2, new_file_path =
 
 #' download a CSV file from the project google shared drive and read into memory
 #'
-#' given a CSV filename, find it in our shared drive and read it in.  If there are multiple files
+#' NOTE this can import gsheet as CSV, but only the first tab.  Use read_gsheet_by_url() for multi-tab sheets
+#' Reads either CSV file or gsheet doc from a shared drive and reads it in as data frame.  If there are multiple files
 #' found with the same name on the share drive, throws a warning and reads only the first one
 #' it finds  (which may not be the most recent one!   )
 #' This is not needed for working with folders/datafiles connected to your computer
-#' via Google Drive Desktop (Mac/Windows), only for reading files directly.  If you don't have access
-#' to the share drive it will not work
+#' via Google Drive Desktop (Mac/Windows), only for reading files directly the Internet via URL.  Requires access
+#' to a share drive
 #'
 #' @param filepath full name of the CSV file (e.g. myfile.csv ) with optional partial path.
 #' @param shared_drive name of the shared drive to look in, default NULL passed to get_gsfile which which reads path from environment (see get_gsfile)
