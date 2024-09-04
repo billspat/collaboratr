@@ -12,26 +12,6 @@ read_column_definitions<-function(df){
 
 
 
-
-
-
-#' Example Column Definitions
-#'
-#' list of column names with meanings, data type, units and examples
-#'
-#' @format ## `example_data_definition`
-#' A data frame 40-ish rows and 4 columns:
-#' \describe{
-#'   \item{col_name}{name of column in biomass}       ""
-#'   \item{col_description}{desc}
-#'   \item{col_type}{R data type}
-#'   \item{example}{what may go in the data}
-#'   \item{notes}{misc field}
-#' }
-"example_data_definition"
-
-
-
 #' read in two-tab data sheet from meta analysis from google drive
 #'
 #' data sheets in google drive have data tab (1) and group definition tab (2)
