@@ -31,16 +31,6 @@ read_column_definitions<-function(df){
 "example_data_definition"
 
 
-# #' default file with validation rules for biomass data
-# #'
-# #' @export
-# biomass_validation_file <- system.file('rules', 'biomass_validation_rules.yaml', package='commruleR')
-
-# #' default file with validation rules for env data
-# #'
-# #' @export
-# env_validation_file <- system.file('rules', 'env_validation_rules.yaml', package='commruleR')
-
 
 #' read in two-tab data sheet from meta analysis from google drive
 #'
@@ -62,13 +52,30 @@ read_data_sheet<-function(sheet_url, has_description_line = TRUE, drive_email=NU
 
 }
 
+
+#' @export
+type_name_to_fn <- function(type_str) {
+  if(type_str == 'character') return(readr::col_character)
+  if(type_str == 'factor') return(readr::col_factor)
+  if(type_str == 'double') return(readr::col_double)
+  if(type_str == 'integer') return(readr::col_integer)
+  return(NA)
+}
+
+
+
+
 #' @export
 read_data_specification<- function(csv_file){
-  spec_df <- readr::read_csv(csv_file)
+  spec_df <- readr::read_csv(csv_file, show_col_types = FALSE)
   stopifnot("col_name" %in% names(spec_df))
   return(spec_df)
 }
 
+
+data_specification_column_spec <- function(spec_df) {
+  paste0(substr(spec.df$col_type, 1, 1), collapse = '')
+}
 
 
 #' validate columns against data definition
