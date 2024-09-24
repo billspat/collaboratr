@@ -1,0 +1,37 @@
+rules:
+- expr: '!is.na(Species) & length(Species) > 0'
+  name: 'Species required'
+  label: ''
+  description: 'Species is required'
+  created: 2024-09-05 14:14:08.488506
+  origin: command-line
+  meta:
+    language: validate 1.1.5
+    severity: error
+- expr: 'is.character(Species) & nchar(Species) > 2'
+  name: 'Species is character'
+  label: 'species is required and must be character'
+  description: ''
+  created: 2024-09-05 09:34:46.933295
+  origin: command-line
+  meta:
+    language: validate 1.1.5
+    severity: error
+- expr: nchar(as.character(spp_who)) >= 2
+  name: 'species_two_or_more_chars'
+  label: ''
+  description: ''
+  created: 2024-08-05 09:41:37.235059
+  origin: command-line
+  meta:
+    language: validate 1.1.5
+    severity: error
+- expr: is.numeric(Sepal.Length)
+  name: 'sepal length is a number'
+  label: ''
+  description: ''
+  created: 2024-09-05 09:52:23.729404
+  origin: command-line
+  meta:
+    language: validate 1.1.5
+    severity: error
