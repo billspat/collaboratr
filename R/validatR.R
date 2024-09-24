@@ -110,3 +110,16 @@ validate_biomass<- function(biomass_df, validation_file = NULL){
   return(r)
 
 }
+
+#' convenience to create validation results from a yaml file
+#' @param data_dfe data frame of data
+#' @param file yaml formatted file with rules for the validate package
+#' @returns the outupt from confront function
+#' @export
+validate_from_file <- function(data_df, file){
+  validation_rules <- validate::validator(.file= file)
+  validation_results <- validate::confront(data_df, validation_rules)
+  validate::summary(validation_results)
+  return(validation_results)
+
+}
