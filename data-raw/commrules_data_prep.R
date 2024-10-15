@@ -1,9 +1,18 @@
 ## code to prepare data
 
-commecology_rules_biomass_str <- readr::read_csv('data-raw/commecology_rules_biomass_str.csv')
-usethis::use_data(commecology_rules_biomass_str, overwrite = TRUE)
+raw_data_dir = 'data-raw'
 
-biomass_validator_file <- 'data-raw/biomass_validation_rules.yaml'
+commassembly_rules_template <- Sys.getenv('TEST_TEMPLATE_URL') # https://docs.google.com/spreadsheets/d/1JCRxk44z1M_h3RV7UJi1eEWPOuFxYpID/edit?gid=1744474531#gid=1744474531'
+
+
+commassembly_rules_biomass_str <-  googlesheets4::read_sheet(googledrive::as_id(commassembly_rules_template), sheet = 'biomass_str')
+#   readr::read_csv(file.path(raw_data_dir, 'biomass_spec.csv'))
+usethis::use_data(commassembly_rules_biomass_str, overwrite = TRUE)
+commassembly_rules_env_str <-  googlesheets4::read_sheet(googledrive::as_id(commassembly_rules_template), sheet = 'env_str')
+usethis::use_data(commassembly_rules_env_str, overwrite = TRUE)
+
+# validation rules?
+biomass_validator_file <- file.path(raw_data_dir, 'biomass_validation_rules.yaml')
 biomass_validator <- validate::validator(.file= biomass_validator_file )
 usethis::use_data(biomass_validator, overwrite = TRUE)
 

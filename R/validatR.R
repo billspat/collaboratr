@@ -52,7 +52,7 @@ read_data_specification<- function(csv_file){
   return(spec_df)
 }
 
-
+#' @export
 data_specification_column_spec <- function(spec_df) {
   paste0(substr(spec.df$col_type, 1, 1), collapse = '')
 }
