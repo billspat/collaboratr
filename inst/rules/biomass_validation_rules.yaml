@@ -1,0 +1,93 @@
+rules:
+- expr: '!is.na(ID_new)'
+  name: 'ID_new_required'
+  label: ''
+  description: 'ID_new is required'
+  created: 2024-08-05 14:14:08.488506
+  origin: command-line
+  meta:
+    language: validate 1.1.5
+    severity: error
+- expr: is.character(spp_who)
+  name: 'spp_who_character'
+  label: 'spp_who is required and must be character'
+  description: ''
+  created: 2024-08-05 09:34:46.933295
+  origin: command-line
+  meta:
+    language: validate 1.1.5
+    severity: error
+- expr: nchar(as.character(spp_who)) >= 2
+  name: 'spp_who_two_or_more_chars'
+  label: ''
+  description: ''
+  created: 2024-08-05 09:41:37.235059
+  origin: command-line
+  meta:
+    language: validate 1.1.5
+    severity: error
+- expr: is.integer(ID_new)
+  name: 'id_new_int'
+  label: 'id_new_int'
+  description: 'ID_new must be an integer'
+  created: 2024-08-05 09:52:23.729404
+  origin: command-line
+  meta:
+    language: validate 1.1.5
+    severity: error
+- expr: is.character(trt_type)
+  name: 'trt_type_is_char'
+  label: ''
+  description: ''
+  created: 2024-08-05 14:05:23.839938
+  origin: command-line
+  meta:
+    language: validate 1.1.5
+    severity: error
+- expr: '!is.na(trt_type)'
+  name: trt_type_required
+  label: ''
+  description: ''
+  created: 2024-08-05 14:06:55.066629
+  origin: command-line
+  meta:
+    language: validate 1.1.5
+    severity: error
+- expr: trt_type %in% c("monoculture", "mixture", "alone")
+  name: trt_type_valid_code
+  label: 'trt_type one of 3 codes'
+  description: ''
+  created: 2024-08-05 14:08:05.994044
+  origin: command-line
+  meta:
+    language: validate 1.1.5
+    severity: error
+- expr: '!is.na(f_nat_inv)'
+  name: f_nat_inv_required
+  label: ''
+  description: ''
+  created: 2024-08-05 14:12:36.53846
+  origin: command-line
+  meta:
+    language: validate 1.1.5
+    severity: error
+- expr: (f_nat_inv %in% c("native", "NA", "invasive", "non-native"))
+  name: f_nat_inv_valide_code
+  label: ''
+  description: ''
+  created: 2024-08-05 14:12:36.53846
+  origin: command-line
+  meta:
+    language: validate 1.1.5
+    severity: error
+- expr: in_range(response_mean, min=0, max=150)
+  name: response_mean_range
+  label: 'response mean zero to max 150'
+  description: ''
+  created: 2024-08-13 14:12:36.53846
+  origin: command-line
+  meta:
+    language: validate 1.1.5
+    severity: error
+
+
