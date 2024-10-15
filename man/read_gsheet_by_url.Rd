@@ -6,7 +6,7 @@
 \usage{
 read_gsheet_by_url(
   gurl,
-  sheet_tab_number = 1,
+  sheet_id = 1,
   has_description_line = TRUE,
   drive_email = NULL
 )
@@ -14,7 +14,7 @@ read_gsheet_by_url(
 \arguments{
 \item{gurl}{url of a google sheet (and only a google sheet, not doc)}
 
-\item{sheet_tab_number}{optional the number of the tab (1, 2), defaults to 1}
+\item{sheet_id}{optional the name or number of the tab (1, 2), defaults to 1, see read_sheet() fn}
 
 \item{has_description_line}{does the sheet have row 2 as description of data, if TRUE (default), remove it}
 

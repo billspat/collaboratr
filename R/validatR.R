@@ -25,8 +25,8 @@ read_column_definitions<-function(df){
 read_data_sheet<-function(sheet_url, has_description_line = TRUE, drive_email=NULL){
   # gdrive_setup(drive_email = drive_email)
 
-  data_df <- read_gsheet_by_url(gurl = sheet_url, sheet_tab_number = 1, has_description_line = has_description_line )
-  group_df <- read_gsheet_by_url(gurl = sheet_url, sheet_tab_number = 2, has_description_line = has_description_line)
+  data_df <- read_gsheet_by_url(gurl = sheet_url, sheet_id = 1, has_description_line = has_description_line )
+  group_df <- read_gsheet_by_url(gurl = sheet_url, sheet_id = 2, has_description_line = has_description_line)
 
   return(list('data' = biomass_df, 'group' = env_df))
 

@@ -2,7 +2,8 @@
 
 
 test_new_id <- 1943
-test_url <- "https://docs.google.com/spreadsheets/d/1-eMIuFa0d8MyUOzwnJ6nffa4wa4ImDwut6Z5SIqOIPk/edit?gid=0#gid=0"
+
+test_url <- Sys.getenv('TEST_URL') # "https://docs.google.com/spreadsheets/d/1-eMIuFa0d8MyUOzwnJ6nffa4wa4ImDwut6Z5SIqOIPk/edit?gid=0#gid=0"
 
 test_that("tests work", {
   expect_true(TRUE)

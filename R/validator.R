@@ -42,8 +42,8 @@
 # read_commrules_sheet<-function(sheet_url, has_description_line = TRUE, drive_email=NULL){
 #   # gdrive_setup(drive_email = drive_email)
 
-#   biomass_df <- read_gsheet_by_url(gurl = sheet_url, sheet_tab_number = 1, has_description_line = has_description_line )
-#   env_df <- read_gsheet_by_url(gurl = sheet_url, sheet_tab_number = 2, has_description_line = has_description_line)
+#   biomass_df <- read_gsheet_by_url(gurl = sheet_url, sheet_id = 1, has_description_line = has_description_line )
+#   env_df <- read_gsheet_by_url(gurl = sheet_url, sheet_id = 2, has_description_line = has_description_line)
 
 #   return(list('biomass' = biomass_df, 'env' = env_df))
 # }

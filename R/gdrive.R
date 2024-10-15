@@ -204,12 +204,12 @@ get_gsfile<-function(file_name_or_url, shared_drive=NULL, drive_path=NULL,drive_
 #'
 #' requires Oauth and google cloud console setup
 #' @param gurl url of a google sheet (and only a google sheet, not doc)
-#' @param sheet_tab_number optional the number of the tab (1, 2), defaults to 1
+#' @param sheet_id optional the name or number of the tab (1, 2), defaults to 1, see read_sheet() fn
 #' @param has_description_line does the sheet have row 2 as description of data, if TRUE (default), remove it
 #' @param drive_email optional drive email, required if you have not already logged in or don't have it set in Env.  See gdrive_setup()
 #' @returns data frame with contents of the tab
 #' @export
-read_gsheet_by_url<-function(gurl, sheet_tab_number= 1, has_description_line = TRUE, drive_email = NULL){
+read_gsheet_by_url<-function(gurl, sheet_id= 1, has_description_line = TRUE, drive_email = NULL){
 
   gs_file <- get_gsfile(gurl)
 
@@ -231,17 +231,17 @@ read_gsheet_by_url<-function(gurl, sheet_tab_number= 1, has_description_line = T
   if(has_description_line == TRUE){
     # the
     # read the sheet just to get the column names
-    temp_dataframe <- googlesheets4::read_sheet(googledrive::as_id(gurl), sheet = sheet_tab_number)
+    temp_dataframe <- googlesheets4::read_sheet(googledrive::as_id(gurl), sheet = sheet_id)
     col_names <- names(temp_dataframe)
     rm(temp_dataframe)
     # read in but skip header and row 2 with text description
     # this df has no col names but will most likley have the correct types
-    df <- googlesheets4::read_sheet(googledrive::as_id(gurl), sheet = sheet_tab_number, col_names = FALSE, skip=2)
+    df <- googlesheets4::read_sheet(googledrive::as_id(gurl), sheet = sheet_id, col_names = FALSE, skip=2)
     names(df)<- col_names
 
   } else {
     # no description row , just read it in
-    df<- googlesheets4::read_sheet(googledrive::as_id(gurl), sheet = sheet_tab_number)
+    df<- googlesheets4::read_sheet(googledrive::as_id(gurl), sheet = sheet_id)
   }
 
   #TODO transform numeric columns
