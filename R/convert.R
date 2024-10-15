@@ -16,7 +16,7 @@
 #' @returns character vector of column types
 #' @export
 get_col_type_from_spec <-Vectorize(
-    function(col_name, spec) { return( spec[spec$col_name == col_name, ]$col_type)},
+    function(col_name, spec) { return( spec[spec$col_name == col_name, ]$data_str)},
   'col_name')
 
 
@@ -75,10 +75,10 @@ type_converter_fun<-
 #'  - date is not in standard scientific format
 #' @param gurl google sheet url or ID per googlesheets package
 #' @param sheet sheet tab name or number, forward to sheet param in  googlesheets4::read_sheet
-#' @param spec data.frame that is the specification, must have columns col_name and col_type
+#' @param spec data.frame that is the specification, must have columns col_name and data_str
 #' @returns data.frame or NA if there is a problem
 #' @export
-read_commecologyrules_sheet<- function(gurl, sheet, spec.df) {
+read_commassemblyrules_sheet<- function(gurl, sheet, spec.df) {
 
   # read in the sheet but make the whole thing character to deal with special features of this project
   df <- googlesheets4::read_sheet(gurl, sheet = sheet, col_types="c")
@@ -105,7 +105,7 @@ read_commecologyrules_sheet<- function(gurl, sheet, spec.df) {
   for(col_name in names(df))
   {
     # get col type of this column from the spec
-    col_type <- spec.df[spec.df$col_name == col_name, ]$col_type
+    col_type <- spec.df[spec.df$col_name == col_name, ]$data_str
     # if the col type is zero length, means the colname was NOT In the spec,
     if (length(col_type) == 0){
       warning(paste("column not found in specification ", col_name, " ... not converting"))
