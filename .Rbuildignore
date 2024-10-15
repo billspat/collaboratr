@@ -7,3 +7,5 @@
 ^cran-comments\.md$
 ^data-raw$
 notes.txt
+^.Renviron
+^tests$
