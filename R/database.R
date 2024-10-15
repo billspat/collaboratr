@@ -8,7 +8,7 @@
 read_url_list<- function(gurl, id_column = 'id', url_column='url', drive_email = NULL){
 
   # create standardized id column named 'id' to make working with this table easier
-  urls.df <- read_gsheet_by_url(gurl, sheet_tab_number = 1,  has_description_line = FALSE, drive_email = drive_email)
+  urls.df <- read_gsheet_by_url(gurl, sheet_id = 1,  has_description_line = FALSE, drive_email = drive_email)
   # standardize ID column
   if (! id_column %in% colnames(urls.df)) {
     warning(paste('sheet must have an id column and did not find id_column=', id_column,' in this sheets columns', colnames(id.df)))
@@ -40,3 +40,24 @@ read_url_list<- function(gurl, id_column = 'id', url_column='url', drive_email =
 
 }
 
+read_meta<- function(gurl, data_sheet_id, metadata_sheet_id, drive_email= NULL){
+  data_df <- read_gsheet_by_url(gurl, sheet_id = data_sheet_id, has_description_line = TRUE, drive_email = drive_email)
+  metadata_df <- read_gsheet_by_url(gurl, sheet_id = metadata_sheet_id, has_description_line = TRUE, drive_email = drive_email)
+
+}
+
+aggregate_database <- function(url_list_url, data_sheet_id, metadata_sheet_id, id_column = 'id', url_column = 'url', drive_email= NULL){
+  urls.df <- read_url_list(gurl = url_list_url, id_column = id_column, url_column = url_column, drive_email = drive_email)
+
+  for(df_row in rownames(urls.df)){
+    gurl <- urls.df[df_row, url]
+    data_df <- read_gsheet_by_url(gurl, sheet_id = data_sheet_id, has_description_line = TRUE, drive_email = drive_email)
+    metadata_df <- read_gsheet_by_url(gurl, sheet_id = metadata_sheet_id, has_description_line = TRUE, drive_email = drive_email)
+
+  }
+
+
+
+
+
+}
