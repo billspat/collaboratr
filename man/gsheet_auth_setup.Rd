@@ -4,7 +4,7 @@
 \alias{gsheet_auth_setup}
 \title{setup authentication for reading google sheet}
 \usage{
-gsheet_auth_setup(drive_email)
+gsheet_auth_setup(drive_email = NULL)
 }
 \arguments{
 \item{drive_email}{your preferred email, can be read from environment, set get_drive_email}

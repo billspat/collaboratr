@@ -26,7 +26,10 @@ data frame with contents of the tab
 \description{
 Note This is only for google sheets, not CSVs or other data files.
 this can read either type of data sheet (e.g. either tab) and returns th
-To remove the 2nd "description" row, it downloads as CSV, removes the line, and reads back in
+To remove the 2nd "description" row, it downloads as CSV, removes the line,
+and reads back in
+This is a generic function, and does not use a specification file, see
+read_data_sheet() below for that.
 }
 \details{
 requires Oauth and google cloud console setup
