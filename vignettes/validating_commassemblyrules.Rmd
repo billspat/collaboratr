@@ -15,6 +15,7 @@ knitr::opts_chunk$set(
 ```
 
 ```{r setup}
+require(dplyr)
 library(commruleR)
 ```
 
@@ -29,15 +30,199 @@ data(commassembly_rules_env_str)
 doc_with_list_url <- Sys.getenv('TEST_ID_LIST_URL')
 id_column = 'ID_new'
 urls.df <- read_url_list(gurl = doc_with_list_url, id_column = id_column, url_column='url')
+print(paste(nrow(urls.df), "urls to read"))
 ```
 
 Read in the first URL as a test.  There will be warnings if the columns are not the correct type or name
+```{r set_example_url, echo=TRUE}
+# get the example from one of the URLS
+
+# Randome sheet
+test_gsheet_url <- sample(urls.df$url, 1)
+# OR set the example sheet manually
+# test_gsheet_url <- 'https://docs.google.com/spreadsheets/d/1Npcre4y4LnzIU_4v_vqJiVyzLtXGZ1lpYGRnXcfi0X8/edit?gid=0#gid=0'
+
+print(paste("We'll use this test sheet:", test_gsheet_url))
+
+
+```
+
 
 ```{r, read_one_biomass, echo=TRUE}
 # read in one, and validate the column names
 # this will throw warnings if there are invalid column names
-biomass.df <- read_commassemblyrules_sheet(urls.df$url[1], sheet = 'biomass_data', spec.df = commassembly_rules_biomass_str)
-env.df <- read_commassemblyrules_sheet(urls.df$url[1], sheet = 'env_data', spec.df = commassembly_rules_env_str)
-head(biomass.df)
+biomass.df <- read_data_sheet(gurl = test_gsheet_url, 
+                              tab_name = 'biomass_data', 
+                              spec.df = commassembly_rules_biomass_str)
+
+biomass.df
 ```
 
+env sheet
+
+```{r, read_one_env, echo=TRUE}
+env.df <- read_data_sheet(gurl = test_gsheet_url, 
+                          tab_name = 'env_data', 
+                          spec.df = commassembly_rules_env_str)
+head(env.df)
+```
+
+## Validation
+
+the above does validate the column headers and types.  (TDB problems output from readr)
+
+Let's try using the validation rules
+
+```{r, validate biomass from file, echo=TRUE, error=TRUE}
+
+biomass_validation_file <- '../inst/rules/biomass_validation_rules.yaml'
+file.exists(biomass_validation_file)
+validation_summary <- validate::summary(validate_from_file(biomass.df, biomass_validation_file))
+validation_summary
+
+```
+
+Validation: Just show the fails
+```{r, show validation fails}
+if(sum(validation_summary$fails) == 0) {
+  print("Validation Passed, return true")
+} else {
+  fails <- validation_summary[validation_summary$fails > 0,]
+  fails
+}
+
+```
+
+**Validate the 'env' tab**
+
+```{r, validate env from file, echo=TRUE, error=TRUE}
+
+env_validation_file <- '../inst/rules/env_validation_rules.yaml'
+# file.exists(env_validation_file)
+validation_summary <- validate::summary(validate_from_file(env.df, env_validation_file))
+if(sum(validation_summary$fails) == 0) {
+  print("Validation Passed, return true")
+} else {
+  print("Validation fails")
+  fails <- validation_summary[validation_summary$fails > 0,]
+  fails
+}
+
+```
+
+
+## Function to read, check columns, validate and save the CSVS of these two tabs
+
+```{r, functions to write sheets, echo=TRUE, error=TRUE}
+csv_folder = '../L0'
+dir.create(csv_folder, showWarnings = FALSE)
+biomass_validation_file <- '../inst/rules/biomass_validation_rules.yaml'
+env_validation_file <- '../inst/rules/env_validation_rules.yaml'
+
+# sheet_data is one row of the URLS data frame, as a list, url is ..$url
+save_csvs<- function(sheet_data){
+  print(paste(sheet_data$id, sheet_data$url))
+  url <- sheet_data$url
+  tryCatch({
+    env.df <- read_data_sheet(url, tab_name = 'env_data', spec.df = commassembly_rules_env_str)
+    }, error=function(e){ 
+      print(paste("reading or columns error"))
+      print(e)
+      return (c(NA, NA))
+    }
+  )
+    
+  if(!exists('env.df')) {
+    print(paste("could not read sheet: "))
+    return (c(NA, NA))
+  }
+  
+  tryCatch({
+    biomass.df <- (read_data_sheet(url, tab_name = 'biomass_data', spec.df = commassembly_rules_biomass_str))
+    }, error=function(e){ 
+      print(paste("reading or columns error"))
+      print(e)
+      return (c(NA, NA))
+
+    }
+  )
+  
+  if(!exists('biomass.df')) {
+    print(paste("could not read sheet "))
+    return (c(NA, NA))
+  } 
+  
+  biomass_validation_summary <- validate::summary(validate_from_file(biomass.df, biomass_validation_file))
+  if(sum(validation_summary$fails) == 0) {
+      print("Validation Passed, return true")
+  } else {
+    fails <- dplr::select(validation_summary, fails > 0)
+    print(fails)
+}
+  
+  id_new = sheet_data$ID_new
+  biomass_file_name <- file.path(csv_folder, paste0('biomass_', id_new, '.csv'))
+  write.csv(biomass.df, biomass_file_name, row.names = FALSE)
+  env_file_name <- file.path(csv_folder, paste0('env_', id_new, '.csv'))
+  write.csv(env.df, env_file_name, row.names = FALSE)
+  
+  return(c(biomass_file_name, env_file_name))
+}
+
+
+```
+
+###  Save one to a csv and output the filename
+
+```{r, save_one, echo=TRUE, error=TRUE}
+
+test_url_num <- sample(1:nrow(urls.df), 1)
+test_gsheet <- as.list(urls.df[test_url_num,])
+test_file_names<- save_csvs(test_gsheet)
+
+print(test_file_names)
+```
+
+### Try to read the CSV back in
+
+
+```{r}
+test_df <- read_data_csv(test_file_names[1], spec.df = commassembly_rules_biomass_str)
+test_df
+```
+
+
+```{r, save them all, echo=TRUE, error=TRUE}
+
+# before running this, authenticate
+
+if(!gsheet_auth_setup(drive_email = Sys.getenv('PROJECT_EMAIL'))) {
+  warning('could not authenticate to google sheets')
+} else {
+  for(i in seq(1:nrow(urls.df))) {
+    print(urls.df$id[i])
+    tryCatch({
+      study_info <- as.list(urls.df[i,])
+      file_names<- save_csvs(study_info)
+      print(file_names)
+      }, error=function(e) print(e))
+  }
+}
+```
+
+### Build a database
+
+```{r, combine, echo=TRUE}
+# getting the list of CSV file paths is flexible so that some could be 
+# excluded or multiple folders combined
+
+biomass_files <- dir('../L0', pattern = "biomass.*\\.csv", 
+                          full.names = TRUE, include.dirs = TRUE)
+biomass.df <- aggregate_csvs(csv_list=biomass_files, spec.df=commassembly_rules_biomass_str)
+
+# some of these are not saving or reading correctly
+#env_files <- dir('../L0', pattern = "env.*\\.csv", full.names = TRUE, include.dirs = TRUE)
+# env.df <- aggregate_csvs(csv_list=env_files, spec.df=commassembly_rules_env_str)
+
+print(paste('biomass rows', nrow(biomass.df))) # , " env rows", nrow(env.df)))
+```
