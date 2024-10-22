@@ -200,7 +200,10 @@ get_gsfile<-function(file_name_or_url, shared_drive=NULL, drive_path=NULL,drive_
 #'
 #' Note This is only for google sheets, not CSVs or other data files.
 #' this can read either type of data sheet (e.g. either tab) and returns th
-#' To remove the 2nd "description" row, it downloads as CSV, removes the line, and reads back in
+#' To remove the 2nd "description" row, it downloads as CSV, removes the line,
+#' and reads back in
+#' This is a generic function, and does not use a specification file, see
+#' read_data_sheet() below for that.
 #'
 #' requires Oauth and google cloud console setup
 #' @param gurl url of a google sheet (and only a google sheet, not doc)
@@ -250,6 +253,90 @@ read_gsheet_by_url<-function(gurl, sheet_id= 1, has_description_line = TRUE, dri
 
 }
 
+
+#' read in google sheet for formatted for specific project, similar to how the
+#' readr package works for read_csv with a spec sheet
+#'  data sheet features
+#'  - allows you to skip top row(s) of data  - allows for sheets that have
+#'  non-data rows that are descriptive
+#'  - numeric columns can have numeric strings and those will be converted to
+#'    NAs, e.g. can indicate "NA" in numeric cells
+#'  - requires a spec sheet that uses names per `type_converter_fun()`
+#'
+#' @param gurl google sheet url or ID per googlesheets package
+#' @param tab_name sheet tab name or number, forward to sheet param in  googlesheets4::read_sheet
+#' @param spec.df data.frame that is the specification, must have columns col_name and data_str
+#' @param rows_to_skip integer default 1, number of rows to skip, not including
+#'        col names.  some sheets have non-data or documentation in first rows
+#'        set to 0 to not skip any rows
+#' @param use_readr logical default TRUE, use readr::type_convert() to validate
+#' @returns data.frame or NA if there is a problem
+#' @export
+read_data_sheet<- function(gurl, tab_name, spec.df, rows_to_skip = 1, use_readr=TRUE) {
+
+  # read in the sheet but make the whole thing character to deal with special features of this project
+
+  file_name <- googlesheets4::gs4_get(gurl)$name
+  df <- googlesheets4::read_sheet(gurl, sheet = tab_name, col_types="c")
+
+  # ditch the first row which is always text instructions for this particular project
+  # remaining row/cols are all character
+  df <- df[-1 * rows_to_skip,]
+
+  # check col names against spec$col_name, do not allow deviations
+  erroneous_col_names <- setdiff(names(df), spec.df$col_name)
+  missing_col_names <- setdiff(spec.df$col_name, names(df))
+
+  if(length(missing_col_names)>0 || length(erroneous_col_names)>0){
+    if(length(erroneous_col_names)>0){ warning(paste(file_name, tab_name, "has erroneous column names:", erroneous_col_names))}
+    if(length(missing_col_names)>0){ warning(paste(file_name, tab_name, "has missing columns:", missing_col_names))}
+
+    return(NA)
+  }
+
+  if(use_readr==TRUE){
+    # use the this function from reader to convert an all-character data frame
+    # using a spec.  The huge advantage is that it detects "NA" in numeric
+    # columns automatically
+    df <- readr::type_convert(df,
+                              col_types = spec_to_readr_col_types(spec.df),
+                              na = c("", "NA")
+    )
+    conversion_issues<- readr::problems(df)
+    if (nrow(conversion_issues) > 0){
+      warning_message = paste(file_name, ": type validation issues with sheet ", gurl, " tab ",tab_name)
+      warning(warning_message)
+      warning(conversion_issues)
+      return( NA)
+    }
+
+  } else {
+    # non-readr manual method, before I discovered the awesome readr::type_convert()
+    # get the data types in the same order as the sheet by mapping the names to data types using the spec
+    col_types <- get_col_type_from_spec(names(df), spec.df)
+
+    # internal function for running the conversion on the data frame, column by column
+    for(col_name in names(df))
+    {
+      # get col type of this column from the spec
+      col_type <- spec.df[spec.df$col_name == col_name, ]$data_str
+      # if the col type is zero length, means the colname was NOT In the spec,
+      if (length(col_type) == 0){
+        warning(paste("column not found in specification ", col_name, " ... not converting"))
+
+      } else {
+
+        # the type_converter_fun returns a FUNCTION not data
+        convert_function <- type_converter_fun(col_type)
+        # convert it but dont' bother the user with all the NA conversion
+        df[[col_name]] <- convert_function(df[[col_name]])
+      }
+    }
+  }
+
+  return(df)
+
+}
 
 
 #' WIP get time stamp for a particular gfile
