@@ -1,37 +1,8 @@
+# validatR.R functions used to check data columns, data types and run
+# validation checks using validate package
 
-#  need method to read in column definitions
-
-read_column_definitions_sheet<-function(gurl){
-
-}
-
-
-read_column_definitions<-function(df){
-
-}
-
-
-
-#' read in two-tab data sheet from meta analysis from google drive
-#'
-#' data sheets in google drive have data tab (1) and group definition tab (2)
-#'
-#' @param sheeturl the url of of the google sheet that has commecologyRULES data
-#' @param has_description_line T/F datasheets use first row with explanatory text in google sheet, remove if TRUE.  defaults to TRUE
-#' @param drive_email the email to use for google drive log-in, which is the institution that setup the project
-#'
-#' @returns list of data frames, on for each google sheet tab
-#' @export
-read_data_sheet<-function(sheet_url, has_description_line = TRUE, drive_email=NULL){
-  # gdrive_setup(drive_email = drive_email)
-
-  data_df <- read_gsheet_by_url(gurl = sheet_url, sheet_id = 1, has_description_line = has_description_line )
-  group_df <- read_gsheet_by_url(gurl = sheet_url, sheet_id = 2, has_description_line = has_description_line)
-
-  return(list('data' = biomass_df, 'group' = env_df))
-
-}
-
+require(validate)
+require(readr)
 
 #' @export
 type_name_to_fn <- function(type_str) {
@@ -41,7 +12,6 @@ type_name_to_fn <- function(type_str) {
   if(type_str == 'integer') return(readr::col_integer)
   return(NA)
 }
-
 
 
 
@@ -94,23 +64,6 @@ validate_data<- function(data_df, spec_df, validation_rules ){
 
 
 
-
-#' run all validation checks for biomass
-#'
-#' @param biomass_df data frame with biomass data
-#' @param validation_file optional file to read for validation, will read from inst/rules if not sent
-#' @returns boolean TRUE if all validation checks pass
-#' @export
-validate_biomass<- function(biomass_df, validation_file = NULL){
-  if(! validate_biomass_columns(biomass_df))
-    warning("Columns in sheet don't match expected list of columns")
-  return(FALSE)
-
-  r <- validate_biomass_data(biomass_data = biomass_df, validation_file = validation_file)
-  return(r)
-
-}
-
 #' convenience to create validation results from a yaml file
 #' @param data_dfe data frame of data
 #' @param file yaml formatted file with rules for the validate package
@@ -123,3 +76,44 @@ validate_from_file <- function(data_df, file){
   return(validation_results)
 
 }
+
+
+# this is specific to one project and will be move to a vignette
+
+#' #' read in two-tab data sheet from meta analysis from google drive
+#' #'
+#' #' data sheets in google drive have data tab (1) and group definition tab (2)
+#' #'
+#' #' -param sheeturl the url of of the google sheet that has commecologyRULES data
+#' #' -param has_description_line T/F datasheets use first row with explanatory text in google sheet, remove if TRUE.  defaults to TRUE
+#' #' -param drive_email the email to use for google drive log-in, which is the institution that setup the project
+#' #'
+#' #' -returns list of data frames, on for each google sheet tab
+#' #' -export
+#' read_data_sheet<-function(sheet_url, has_description_line = TRUE, drive_email=NULL){
+#'   # gdrive_setup(drive_email = drive_email)
+#'
+#'   data_df <- read_gsheet_by_url(gurl = sheet_url, sheet_id = 1, has_description_line = has_description_line )
+#'   group_df <- read_gsheet_by_url(gurl = sheet_url, sheet_id = 2, has_description_line = has_description_line)
+#'
+#'   return(list('data' = biomass_df, 'group' = env_df))
+#'
+#' }
+
+# this function can be run via validate_data_columns() and then validate_data() and/or validate_from_file()
+
+#' #' run all validation checks for biomass
+#' #'
+#' #' -param biomass_df data frame with biomass data
+#' #' -param validation_file optional file to read for validation, will read from inst/rules if not sent
+#' #' -returns boolean TRUE if all validation checks pass
+#' #' -export
+#' validate_biomass<- function(biomass_df, validation_file = NULL){
+#'   if(! validate_biomass_columns(biomass_df))
+#'     warning("Columns in sheet don't match expected list of columns")
+#'   return(FALSE)
+#'
+#'   r <- validate_biomass_data(biomass_data = biomass_df, validation_file = validation_file)
+#'   return(r)
+#'
+#' }

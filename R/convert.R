@@ -45,12 +45,13 @@ as.Date.flexible <- function(x, ...){
 #' @param type_code character value indicating type, one of character, integer, factor, double, numeric, Date(capital D) or first letter
 #' @returns one of the converter function as.integer... etc.  For Dates, return custom as.Date.flexible function defined above
 #' @export
-type_converter_fun<-
-  function(type_code) {
+type_converter_fun<- function(type_code) {
     if (type_code == 'character' || type_code == 'c'){
-      return(as.character)
+      return(readr::parse_character())
+      # return(as.character)
     }
     if (type_code == 'integer' || type_code == 'i'){
+      return()
       return(as.integer)
     }
     if (type_code == 'factor' || type_code == 'f'){
@@ -67,59 +68,97 @@ type_converter_fun<-
 }
 
 
-#' read in google sheet for formatted for specific project
-#'  data sheet features
-#'  - has a 2nd row that is all text that needs to be removed
-#'  - has the string "NA" in some cells that should be numeric only
-#'  - since it's google some cols should be factors but that's not a thing google can do
-#'  - date is not in standard scientific format
-#' @param gurl google sheet url or ID per googlesheets package
-#' @param sheet sheet tab name or number, forward to sheet param in  googlesheets4::read_sheet
-#' @param spec data.frame that is the specification, must have columns col_name and data_str
-#' @returns data.frame or NA if there is a problem
-#' @export
-read_commassemblyrules_sheet<- function(gurl, sheet, spec.df) {
-
-  # read in the sheet but make the whole thing character to deal with special features of this project
-  df <- googlesheets4::read_sheet(gurl, sheet = sheet, col_types="c")
-
-  # ditch the first row which is always text instructions for this particular project
-  # remaining row/cols are all character
-  df <- df[-1,]
-
-  # check col names against spec$col_name, do not allow deviations
-  erroneous_col_names <- setdiff(names(df), spec.df$col_name)
-  missing_col_names <- setdiff(spec.df$col_name, names(df))
-
-  if(length(missing_col_names)>0 || length(erroneous_col_names)>0){
-    if(length(erroneous_col_names)>0){ warning("sheet has erroneous column names", erroneous_col_names)}
-    if(length(missing_col_names)>0){ warning("sheet has missing columns", missing_col_names)}
-
-    return(NA)
+type_converter_fun<- function(type_code) {
+  if (type_code == 'character' || type_code == 'c'){
+    return(readr::parse_character())
+    # return(as.character)
+  }
+  if (type_code == 'integer' || type_code == 'i'){
+    return()
+    return(as.integer)
+  }
+  if (type_code == 'factor' || type_code == 'f'){
+    return(as.factor)
+  }
+  if (type_code == 'double' || type_code == 'd' || type_code == 'n' || type_code == 'numeric'){
+    return(as.numeric)
+  }
+  if (type_code == 'Date' || type_code == 'D' ){
+    return(as.Date.flexible)
   }
 
-  # get the data types in the same order as the sheet by mapping the names to data types using the spec
-  col_types <- get_col_type_from_spec(names(df), spec.df)
-
-  # internal function for running the conversion on the data frame, column by column
-  for(col_name in names(df))
-  {
-    # get col type of this column from the spec
-    col_type <- spec.df[spec.df$col_name == col_name, ]$data_str
-    # if the col type is zero length, means the colname was NOT In the spec,
-    if (length(col_type) == 0){
-      warning(paste("column not found in specification ", col_name, " ... not converting"))
-
-    } else {
-
-      # the type_converter_fun returns a FUNCTION not data
-      convert_function <- type_converter_fun(col_type)
-      # convert it but dont' bother the user with all the NA conversion
-      df[[col_name]] <- convert_function(df[[col_name]])
-    }
+  return(as.character)
+}
+#' convert a type name to a readr convert code
+#'
+#' readr uses convert codes - see vignette("readr")
+#' this function allows for named types and will convert those to the 1-letter
+#' codes used by reader
+#' @param type_code single letter or string of type
+#' @returns character single letter code
+type_code_to_readr_code<- function(type_code) {
+  if (type_code == 'character'){
+    return('c')
+  }
+  if (toupper(type_code) == 'INTEGER' ){
+    return('i')
   }
 
-  return(df)
+  if (toupper(type_code) == 'FACTOR' ){
+    return('f')
+  }
 
+  if (toupper(type_code) == 'DOUBLE' || toupper(type_code) == 'NUMERIC'){
+    return('d')
+  }
+  if (type_code == 'Date' || type_code == 'D' ){
+    return('D')
+  }
+
+  return(type_code)
 }
 
+#' convert our specification format to something useable by readr::read_csv
+#'
+#' @param spec.df dataframe with columns 'col_name' and 'data_str'
+#' @returns list of col names and type abbreviations, per read_csv() docs
+#' @export
+spec_to_readr_col_types<- function(spec.df){
+  spec_list = list()
+  for (row in 1:nrow(spec.df)) {
+
+    spec_list[[spec.df$col_name[row] ]] <- type_code_to_readr_code(spec.df$data_str[row])
+  }
+  return(spec_list)
+}
+
+
+
+#' given a URL and params, read, validate and save a CSV
+#'
+#' filename <- read_and_save(url, sheet_id = 'biomass_data', spec.df = commassembly_rules_biomass_str))
+
+read_validate_and_save<- function(url, sheet_id, spec.df, csv_folder = '../L0'){
+
+  dir.create(csv_folder, showWarnings = FALSE)
+
+  tryCatch({
+    data.df <- read_data_sheet(url,
+                               sheet = 'sheet_id',
+                               spec.df = spec.df)
+
+    }, error=function(e) {
+       print(e)
+       return( NA)
+    }
+  )
+
+  id_new = env.df$ID_new[1]
+  biomass_file_name <- file.path(csv_folder, paste0('biomass_', id_new, '.csv'))
+  write.csv(biomass.df, biomass_file_name, row.names = FALSE)
+  env_file_name <- file.path(csv_folder, paste0('env_', id_new, '.csv'))
+  write.csv(env.df, env_file_name, row.names = FALSE)
+
+  return(c(biomass_file_name, env_file_name))
+
+}
