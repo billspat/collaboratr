@@ -112,7 +112,7 @@ gdrive_setup <- function(drive_email=NULL, reset=FALSE){
 #' @param drive_email your preferred email, can be read from environment, set get_drive_email
 #' @returns True/False if the authentication/setup was successful
 #' @export
-gsheet_auth_setup<-function(drive_email){
+gsheet_auth_setup<-function(drive_email= NULL){
 
   # don't know if we also have to setup google drive
   #   if (! gdrive_setup(drive_email)){
