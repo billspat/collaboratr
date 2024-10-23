@@ -19,6 +19,17 @@ require(dplyr)
 library(commruleR)
 ```
 
+## Authenticate to gdrive/sheets.  Requires an email account
+
+```{r gdrive setup, echo=TRUE}
+
+## EDIT AND ADD YOUR EMAIL IF YOU DON'T HAVE AN EMAIL IN .Renviron FILE
+drive_email = get_drive_email()
+gsheet_auth_setup(drive_email = drive_email)
+```
+
+
+
 ## Load data specific to the Comm Assembly Rules project stored in this package
 
 ```{r, start, echo=TRUE}
@@ -96,6 +107,10 @@ if(sum(validation_summary$fails) == 0) {
 **Validate the 'env' tab**
 
 ```{r, validate env from file, echo=TRUE, error=TRUE}
+env.df.df <- read_data_sheet(gurl = test_gsheet_url, 
+                              tab_name = 'env_data', 
+                              spec.df = commassembly_rules_env_str)
+
 
 env_validation_file <- '../inst/rules/env_validation_rules.yaml'
 # file.exists(env_validation_file)
@@ -107,6 +122,52 @@ if(sum(validation_summary$fails) == 0) {
   fails <- validation_summary[validation_summary$fails > 0,]
   fails
 }
+
+```
+
+### find missing column error
+
+this is example code to only show validation errors and not to save anything
+
+```{r}
+# before running this, authenticate. 
+# if you don't have ths PROJECT_EMAIL set in .Renviron, edit the next line
+drive_email = Sys.getenv('PROJECT_EMAIL')
+stopifnot(gsheet_auth_setup(drive_email = drive_email))
+
+env_validation_file <- '../inst/rules/env_validation_rules.yaml'
+
+error_list = list()
+for(i in seq(1:nrow(urls.df))) {
+    data_sheet_url <- as.list(urls.df[i,])
+    print(paste(data_sheet_url$who, data_sheet_url$id, data_sheet_url[i,]$url))
+    
+
+    tryCatch({
+      env.df <- read_data_sheet(data_sheet_url$url, 
+                                tab_name = 'env_data', 
+                                spec.df = commassembly_rules_env_str)
+      append(error_list, warnings())      
+    }, error=function(e){ 
+        print(paste("reading or columns error", e))
+        return(NA)
+      }
+    )
+
+    
+    tryCatch({
+      env_validation_summary <- validate::summary(validate_from_file(env.df, env_validation_file))
+      if(sum(validation_summary$fails) != 0) {
+        fails <- dplr::filter(validation_summary, fails > 0)
+        print(paste(fails$name, "has", fails$fails, "invalid rows"))
+      }
+    }, error=function(e){ 
+        print(paste("reading or columns error", e))
+      }
+    )
+
+}
+
 
 ```
 
@@ -137,13 +198,23 @@ save_csvs<- function(sheet_data){
     return (c(NA, NA))
   }
   
+  # ENV VALIDATION
+  env_validation_summary <- validate::summary(validate_from_file(env.df, env_validation_file))
+  if(sum(validation_summary$fails) == 0) {
+      print("Validation Passed")
+  } else {
+    fails <- dplr::filter(validation_summary, fails > 0)
+    print(fails)
+    return (c(NA, NA))
+  }
+  
+  ## BIOMASS READ
   tryCatch({
     biomass.df <- (read_data_sheet(url, tab_name = 'biomass_data', spec.df = commassembly_rules_biomass_str))
     }, error=function(e){ 
       print(paste("reading or columns error"))
       print(e)
       return (c(NA, NA))
-
     }
   )
   
@@ -152,13 +223,15 @@ save_csvs<- function(sheet_data){
     return (c(NA, NA))
   } 
   
+  # BIOMASS VALIDATION
   biomass_validation_summary <- validate::summary(validate_from_file(biomass.df, biomass_validation_file))
   if(sum(validation_summary$fails) == 0) {
-      print("Validation Passed, return true")
+      print("Validation Passed")
   } else {
-    fails <- dplr::select(validation_summary, fails > 0)
+    fails <- dplr::filter(validation_summary, fails > 0)
     print(fails)
-}
+    return (c(NA, NA))
+  } 
   
   id_new = sheet_data$ID_new
   biomass_file_name <- file.path(csv_folder, paste0('biomass_', id_new, '.csv'))
@@ -191,24 +264,30 @@ test_df <- read_data_csv(test_file_names[1], spec.df = commassembly_rules_biomas
 test_df
 ```
 
+## Loop that reads all URLS in the url list. 
+
 
 ```{r, save them all, echo=TRUE, error=TRUE}
 
-# before running this, authenticate
+# before running this, authenticate. 
+# if you don't have ths PROJECT_EMAIL set in .Renviron, edit the next line
+drive_email = Sys.getenv('PROJECT_EMAIL')
+stopifnot(gsheet_auth_setup(drive_email = drive_email))
 
-if(!gsheet_auth_setup(drive_email = Sys.getenv('PROJECT_EMAIL'))) {
-  warning('could not authenticate to google sheets')
-} else {
-  for(i in seq(1:nrow(urls.df))) {
-    print(urls.df$id[i])
-    tryCatch({
-      study_info <- as.list(urls.df[i,])
-      file_names<- save_csvs(study_info)
-      print(file_names)
-      }, error=function(e) print(e))
-  }
+# temporary filter out one person
+urls.df <- urls.df[urls.df$who !='AR',]
+
+for(i in seq(1:nrow(urls.df))) {
+  # print(urls.df$id[i])
+  tryCatch({
+    data_sheet_url <- as.list(urls.df[i,])
+    file_names<- save_csvs(study_info)
+    print(file_names)
+    }, error=function(e) print(e))
 }
 ```
+
+
 
 ### Build a database
 
