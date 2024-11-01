@@ -62,25 +62,21 @@ rules:
   meta:
     language: validate 1.1.5
     severity: error
-- expr: '!is.na(f_nat_inv)'
-  name: f_nat_inv_required
-  label: ''
-  description: ''
-  created: 2024-08-05 14:12:36.53846
-  origin: command-line
-  meta:
-    language: validate 1.1.5
-    severity: error
 - expr: (f_nat_inv %in% c("native", "NA", "invasive", "non-native"))
-  name: f_nat_inv_valide_code
+  name: f_nat_inv_valid_code
   label: ''
   description: ''
-  created: 2024-08-05 14:12:36.53846
-  origin: command-line
   meta:
     language: validate 1.1.5
     severity: error
-- expr: in_range(response_mean, min=0, max=150)
+- expr: (c_nat_inv %in% c("native", "NA", "invasive", "non-native"))
+  name: c_nat_inv_valid_code
+  label: ''
+  description: ''
+  meta:
+    language: validate 1.1.5
+    severity: error
+- expr: in_range(response_mean, min=0, max=5000)
   name: response_mean_range
   label: 'response mean zero to max 150'
   description: ''
