@@ -23,6 +23,7 @@
 #' google drive requires an 'api key' set in  cloud project, which you can copy from the cloud console.
 #' how that works is beyond the scope of this, but is a 39-character alphanumber code.  This function
 #' checks that the key is in the environment, which can be set in Renviron.  see help for more details
+#' @export
 get_api_key<-function(){
 
   k = Sys.getenv('PROJECT_API_KEY')
@@ -33,7 +34,9 @@ get_api_key<-function(){
 
 }
 
-
+#' pull drive email from environment
+#'
+#' simple convenience method for replacing an empty drive, called by drive_setup
 get_drive_email <- function(drive_email = NULL){
   if( is.null(drive_email)){
     drive_email <- if(!is.null(drive_email)) drive_email else Sys.getenv('PROJECT_EMAIL')
@@ -52,6 +55,7 @@ get_drive_email <- function(drive_email = NULL){
 #' reads values from the enviroment for configurating a google drive client
 #' for accesing gdrive file or gsheets data
 #' @returns 'client' for use in drive_auth_configure or
+#' @export
 gdrive_client_setup <- function(){
   drive_api_id_file <- Sys.getenv('DRIVE_API_ID_FILE')
   drive_api_id_name<- Sys.getenv('DRIVE_API_ID_NAME')
@@ -272,12 +276,14 @@ read_gsheet_by_url<-function(gurl, sheet_id= 1, has_description_line = TRUE, dri
 #' @param use_readr logical default TRUE, use readr::type_convert() to validate
 #' @returns data.frame or NA if there is a problem
 #' @export
-read_data_sheet<- function(gurl, tab_name, spec.df, rows_to_skip = 1, use_readr=TRUE) {
+read_data_sheet<- function(gurl, tab_name, spec.df, rows_to_skip = 1, use_readr=TRUE, quiet=TRUE) {
+  # suppress automatic output of sheet and range
+  if(quiet == TRUE) googlesheets4::local_gs4_quiet()
 
   # read in the sheet but make the whole thing character to deal with special features of this project
-
   file_name <- googlesheets4::gs4_get(gurl)$name
-  df <- googlesheets4::read_sheet(gurl, sheet = tab_name, col_types="c")
+
+  df <- googlesheets4::read_sheet(gurl, sheet = tab_name, col_types="c", na = c("","NA"))
 
   # ditch the first row which is always text instructions for this particular project
   # remaining row/cols are all character
@@ -298,16 +304,24 @@ read_data_sheet<- function(gurl, tab_name, spec.df, rows_to_skip = 1, use_readr=
     # use the this function from reader to convert an all-character data frame
     # using a spec.  The huge advantage is that it detects "NA" in numeric
     # columns automatically
+    # convert_with_warnings <- errorSaver(readr::type_convert)
+
     df <- readr::type_convert(df,
                               col_types = spec_to_readr_col_types(spec.df),
                               na = c("", "NA")
     )
-    conversion_issues<- readr::problems(df)
-    if (nrow(conversion_issues) > 0){
-      warning_message = paste(file_name, ": type validation issues with sheet ", gurl, " tab ",tab_name)
-      warning(warning_message)
-      warning(conversion_issues)
-      return( NA)
+
+
+    # I don't think this works with type_convert, only read_csv etc
+    # may have to use parse_* for each column and accummulate columns
+    readr_problems <- readr::problems(df)
+    if (nrow(readr_problems) > 0){
+      if(! "warnings" %in% names(df)) {
+        df <- list(df, warnings = readr_problems)
+      }
+      # warning_message = paste(file_name, ": type validation issues with sheet ", gurl, " tab ",tab_name)
+      # print(warning_message)
+      # print(as.list(conversion_issues))
     }
 
   } else {
@@ -408,4 +422,3 @@ read_gcsv<-function( file_name_or_url, shared_drive=NULL, drive_path=NULL, has_c
   csvdata<-readr::read_csv(file = local_file_path)  # (local_file_path, header = TRUE, row.names = NULL)
   return(csvdata)
 }
-

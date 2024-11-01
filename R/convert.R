@@ -6,6 +6,46 @@
 # row_1 = strsplit(readLines(testfile , 1), ',')[[1]]
 # df2 = readr::read_csv(file = "/Users/billspat/tmp/df.csv", col_names = spec.df$col_name, col_types = paste0(substr(spec.df$col_type, 1, 1), collapse = ''))
 
+
+#' Function wrapper to capture errors and warnings for storing
+#'
+#' errorSaver wraps functions to capture error and warning outputs that would
+#' noramlly be emitted to the console can can't be saved.   useful for using
+#' in apply or loop, here used to collect the warnings issued by readr
+#' functions which issue warnings to the console but we want to collect those
+#' warnings
+#' If there are no errors and no warnings, the regular function result is returned
+#' If there are warnings or errors, returns a list with $warn and $err elements
+#' this method breaks down if the result
+#' @export
+#' @param fun The function from which we'll capture errors and warnings
+#' @return a wrapped
+#' @references
+#' \url{http://stackoverflow.com/questions/4948361/how-do-i-save-warnings-and-errors-as-output-from-a-function}
+#' @examples
+#' log.errors <- errorSaver(log)
+#' log.errors("a")
+#' log.errors(1)
+#' #' read_csv_with_warnings <- errorSaver(readr::read_csv)
+#' f.as.numeric(c("a","b",1))
+errorSaver <- function(fun)
+  function(...) {
+    warn <- err <- NULL
+    fun_results <- withCallingHandlers(
+      tryCatch(fun(...), error=function(e) {
+        err <<- conditionMessage(e)
+        NULL
+      }), warning=function(w) {
+        warn <<- append(warn, conditionMessage(w))
+        invokeRestart("muffleWarning")
+      })
+    if(is.character(warn) || is.character(err))
+      list(fun_results, warnings=warn, errors=err)
+    else
+      fun_results
+}
+
+
 #' vector of types from column names, in order
 #'
 #' csvs/sheets created to specs may not be in order of specification, but we want to get the col types in order that the sheet is actually in
@@ -138,13 +178,13 @@ spec_to_readr_col_types<- function(spec.df){
 #'
 #' filename <- read_and_save(url, sheet_id = 'biomass_data', spec.df = commassembly_rules_biomass_str))
 
-read_validate_and_save<- function(url, sheet_id, spec.df, csv_folder = '../L0'){
+read_validate_and_save<- function(url, tab_name, spec.df, csv_folder = '../L0'){
 
   dir.create(csv_folder, showWarnings = FALSE)
 
   tryCatch({
     data.df <- read_data_sheet(url,
-                               sheet = 'sheet_id',
+                               tab_name = tab_name,
                                spec.df = spec.df)
 
     }, error=function(e) {
