@@ -24,8 +24,7 @@
 #  4. run the function validate_all() from the R console which reads all
 
 require(dplyr)
-devtools::load_all()
-gsheet_auth_setup(drive_email = drive_email)
+gdrive_setup()
 
 ### GLOBALS
 csv_folder = '../L0'
@@ -108,7 +107,7 @@ save_csvs<- function(sheet_data, verbose = FALSE){
 
 }
 
-validate_one<-function(id, urls.df = NULL, verbose = FALSE){
+validate_and_save_one<-function(id, urls.df = NULL, verbose = FALSE){
   if(is.null(urls.df)){
     doc_with_list_url <- Sys.getenv('TEST_ID_LIST_URL')
     id_column = 'ID_new'
@@ -121,7 +120,7 @@ validate_one<-function(id, urls.df = NULL, verbose = FALSE){
 
   tryCatch({
     file_names<- save_csvs(study_info)
-    print(file_names)
+    return(file_names)
   }, error=function(e) print(e))
 
 }
@@ -136,6 +135,11 @@ validate_all<- function(){
 
 
   for(i in seq(1:nrow(urls.df))) {
-    validate_one(id = urls.df$id[i], urls.df)
+
+    file_names <- validate_and_save_one(id = urls.df$id[i], urls.df)
+    if(NA %in% file_names) {
+      print(paste("errors in id", urls.df$id[i]))
+      print("---------------")
+    }
   }
 }
