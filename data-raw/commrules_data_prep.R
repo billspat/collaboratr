@@ -15,9 +15,13 @@ commassembly_rules_env_str <-  googlesheets4::read_sheet(googledrive::as_id(comm
 usethis::use_data(commassembly_rules_env_str, overwrite = TRUE)
 
 # validation rules?
-biomass_validator_file <- file.path(raw_data_dir, 'biomass_validation_rules.yaml')
+biomass_validator_file <- file.path('inst/rules/biomass_validation_rules.yaml')
 biomass_validator <- validate::validator(.file= biomass_validator_file )
 usethis::use_data(biomass_validator, overwrite = TRUE)
+
+env_validator_file <- file.path('inst/rules/env_validation_rules.yaml')
+env_validator <- validate::validator(.file= env_validator_file )
+usethis::use_data(env_validator, overwrite = TRUE)
 
 
 prep_iris_species_df <-function(genus){

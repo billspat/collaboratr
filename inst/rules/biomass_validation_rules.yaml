@@ -55,20 +55,21 @@ rules:
   meta:
     language: validate 1.1.5
     severity: error
-- expr: '!is.na(f_nat_inv)'
-  name: f_nat_inv_required
-  label: ''
-  description: ''
-  meta:
-    language: validate 1.1.5
-    severity: error
 - expr: (f_nat_inv %in% c("native", "NA", "invasive", "non-native"))
-  name: f_nat_inv_valide_code
+  name: f_nat_inv_valid_code
   label: ''
-  description: ''
+  description: 'c_nat_inv must be "native", "invasive", "non-native" or NA'
   meta:
     language: validate 1.1.5
     severity: error
+- expr: (c_nat_inv %in% c("native", "NA", "invasive", "non-native"))
+  name: c_nat_inv_valid_code
+  label: ''
+  description: 'c_nat_inv must be "native", "invasive", "non-native" or NA'
+  meta:
+    language: validate 1.1.5
+    severity: error
+
 - expr: in_range(response_mean, min=0, max=150)
   name: response_mean_range
   label: 'response mean zero to max 150'
