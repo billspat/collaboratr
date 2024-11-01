@@ -1,4 +1,9 @@
-## code to prepare data
+## commruleR package, for the IBEEM Community Assembly Rules project
+## code to prepare data to be saved in the /data folder of this package
+## from the main folder of this page, sources this file to create data files
+
+# this will require authentication to google drive, see gdrive.R and
+# gsheet_auth_setup(drive_email) function
 
 raw_data_dir = 'data-raw'
 
@@ -25,7 +30,7 @@ prep_iris_species_df <-function(genus){
 }
 
 
-readr::write_csv( prep_iris_species_df("Setosa"), "data_raw/Setosa.csv")
-readr::write_csv( prep_iris_species_df("Versicolor"), "data_raw/Versicolor.csv")
-readr::write_csv( prep_iris_species_df("Virginica"), "data_raw/Virginica.csv")
+readr::write_csv( prep_iris_species_df("Setosa"), file.path(raw_data_dir,  "Setosa.csv"))
+readr::write_csv( prep_iris_species_df("Versicolor"), file.path(raw_data_dir,  "Versicolor.csv"))
+readr::write_csv( prep_iris_species_df("Virginica"), file.path(raw_data_dir,  "Virginica.csv"))
 
