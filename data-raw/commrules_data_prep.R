@@ -13,6 +13,11 @@ commassembly_rules_biomass_str <-  googlesheets4::read_sheet(googledrive::as_id(
 usethis::use_data(commassembly_rules_biomass_str, overwrite = TRUE)
 commassembly_rules_env_str <-  googlesheets4::read_sheet(googledrive::as_id(commassembly_rules_template), sheet = 'env_str')
 usethis::use_data(commassembly_rules_env_str, overwrite = TRUE)
+biomass_lookup <-  googlesheets4::read_sheet(googledrive::as_id(commassembly_rules_template), sheet = 'biomass_lookup')
+usethis::use_data(biomass_lookup, overwrite = TRUE)
+species_dictionary <-  googlesheets4::read_sheet(googledrive::as_id(commassembly_rules_template), sheet = 'species_dictionary')
+usethis::use_data(species_dictionary, overwrite = TRUE)
+
 
 # validation rules?
 biomass_validator_file <- file.path('inst/rules/biomass_validation_rules.yaml')
