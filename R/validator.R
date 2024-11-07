@@ -21,7 +21,8 @@
 #    via web
 #   it also auto runs devtools::load_all()
 #   to load all the other functions from the project, which also loads the data
-#  4. run the function validate_all() from the R console which reads all
+#  4. run the function validate_all() from the R console which reads all,
+#     validation_problems <- capture.output(validate_all())
 
 require(dplyr)
 gdrive_setup()
@@ -36,15 +37,20 @@ data(commassembly_rules_env_str)
 
 
 # sheet_data is one row of the URLS data frame, as a list, url is ..$url
-read_and_report<- function(url, tab_name, spec.df){
+read_and_report<- function(url, tab_name, spec.df, id=NA){
   read_data_sheet_save_warnings <- commruleR::errorSaver(read_data_sheet)
   data.df <- read_data_sheet_save_warnings(gurl = url,
                                            tab_name,
                                            spec.df)
 
   if("warnings" %in% names(data.df)) {
-    print(paste("reading warnings for tab_name:", tab_name, "url", url))
     print(data.df$warnings)
+    read_error_message <- paste("reading warnings ", url, " tab_name:", tab_name )
+    if (! is.na(id)) {
+      read_error_message <- paste(id, read_error_message)
+    }
+    print(read_error_message)
+
     # get just the data so what's left can be validated
     data.df <- data.df[[1]]
   }
@@ -111,7 +117,7 @@ validate_and_save_one<-function(id, urls.df = NULL, verbose = FALSE){
   if(is.null(urls.df)){
     doc_with_list_url <- Sys.getenv('TEST_ID_LIST_URL')
     id_column = 'ID_new'
-    urls.df <- read_url_list(gurl = doc_with_list_url, id_column = id_column, url_column='url')
+    urls.df <- read_url_list(gurl = doc_with_list_url, id_column = "ID_new", url_column='url')
   }
 
 
@@ -125,7 +131,8 @@ validate_and_save_one<-function(id, urls.df = NULL, verbose = FALSE){
 
 }
 
-
+#' read the list of urls, read, confirm column format, validate and
+#' save to CSV
 validate_all<- function(){
 
   # list of URLS from google drive to a data sheet
@@ -135,11 +142,14 @@ validate_all<- function(){
 
 
   for(i in seq(1:nrow(urls.df))) {
+    study_id = unlist(urls.df$id)[i]
+    study_info = unlist(urls.df[i,])
 
-    file_names <- validate_and_save_one(id = urls.df$id[i], urls.df)
+    file_names <- validate_and_save_one(id = study_id, urls.df)
     if(NA %in% file_names) {
       print(paste("errors in id", urls.df$id[i]))
       print("---------------")
     }
   }
 }
+
