@@ -6,3 +6,6 @@ renv/
 ~$*.xlsx
 *.json
 inst/doc
+int/credentials/*.json
+
+
