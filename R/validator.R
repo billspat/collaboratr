@@ -132,13 +132,22 @@ validate_and_save_one<-function(id, urls.df = NULL, verbose = FALSE){
 }
 
 #' read the list of urls, read, confirm column format, validate and
+#' when using in development mode, make sure do run `devtools::load_all()`
+#' to get all the commruleR functions loaded
 #' save to CSV
-validate_all<- function(){
+validate_all<- function(urls.df=NULL, drive_email =NULL){
+  if(!gsheet_auth_setup(drive_email)){
+    warning("could not authenticate with google sheets api")
+    return(False)
+  }
 
   # list of URLS from google drive to a data sheet
-  doc_with_list_url <- Sys.getenv('TEST_ID_LIST_URL')
-  id_column = 'ID_new'
-  urls.df <- read_url_list(gurl = doc_with_list_url, id_column = id_column, url_column='url')
+  if(is.null(urls.df) || is.na(urls.df)){
+    doc_with_list_url <- Sys.getenv('TEST_ID_LIST_URL')
+    id_column = 'ID_new'
+    urls.df <- read_url_list(gurl = doc_with_list_url, id_column = "ID_new", url_column='url')
+  }
+
 
 
   for(i in seq(1:nrow(urls.df))) {
