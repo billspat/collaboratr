@@ -44,8 +44,8 @@
 create_comm_assembly_rules_data <- function(drive_email = NULL){
 
   # authenticate with google
-  gdrive_setup()
-  gsheet_auth_setup()
+  gdrive_setup(drive_email)
+  gsheet_auth_setup(drive_email)
 
   commassembly_rules_template <- Sys.getenv('TEST_TEMPLATE_URL')
   if(commassembly_rules_template == ""){
