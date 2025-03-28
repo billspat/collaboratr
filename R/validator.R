@@ -146,6 +146,7 @@ validate_all<- function(urls.df=NULL, drive_email =NULL){
     doc_with_list_url <- Sys.getenv('TEST_ID_LIST_URL')
     id_column = 'ID_new'
     urls.df <- read_url_list(gurl = doc_with_list_url, id_column = "ID_new", url_column='url')
+    message(paste("URLs read from ", doc_with_list_url))
   }
 
 
