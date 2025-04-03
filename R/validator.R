@@ -10,19 +10,27 @@
 # the validation rules and column definitions for this project as examples
 
 # to use these functions
+#  0. run devtools::load_all() in the console
+#     to load all the other functions from the project, which also loads the data
 #  1. ensure that you have permissions in GCP and keys in .Renviron
 #    in .Renviron also set the URL for the google sheet with the list of sheet
 #    urls to validate
 #  2. ensure you have the most up-to-date versions of the data template
 #    run the script data-raw/commrules_data_prep.R to generate new data/*.rda
-#  3. source this file
+#    to get those, either pull this repository, or update from google drive
+#    file using the following on the console
+#    source("data-raw/commrules_data_prep.R")
+#     create_comm_assembly_rules_data()
+#  3. source this script file
 #    that will automatically run the google authentication setup, so you
 #    may have to make a choice of using an existing auth, or logging in with
 #    via web
-#   it also auto runs devtools::load_all()
-#   to load all the other functions from the project, which also loads the data
 #  4. run the function validate_all() from the R console which reads all,
 #     validation_problems <- capture.output(validate_all())
+#     There will be many timeout errors like Request failed [429]. Retry 1 happens in 60.1 seconds ...
+#     as google only allows a small number of reads per minute unless on the
+#     enterprise plan.  These are normal and the script will finish anyway, just
+#     slowly
 
 require(dplyr)
 gdrive_setup()
