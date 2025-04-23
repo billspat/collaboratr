@@ -7,5 +7,7 @@ renv/
 *.json
 inst/doc
 int/credentials/*.json
+*.csv
+
 
 
