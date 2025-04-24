@@ -1,9 +1,9 @@
-Package: commruleR
-Title: process 'L0' data for the commRULES projects
+Package: CollaboratoR
+Title: validation and version control for level 0 data using Google Drive
 Version: 0.0.0.9100
 Authors@R: 
     person("Patrick", "Bills", , "billspat@msu.edu", role = c("aut", "cre"),
-           comment = c(ORCID = "YOUR-ORCID-ID"))
+           comment = c(ORCID = "0000-0003-4235-255X"))
 Description: Data management for Community Ecology RULES project of MSU IBEEM, 
   using the EDI data package framework.  Reads data entered using from google drive
   and validates using standard set of rules.   
