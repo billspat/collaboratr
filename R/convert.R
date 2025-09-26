@@ -26,8 +26,7 @@
 #' log.errors <- errorSaver(log)
 #' log.errors("a")
 #' log.errors(1)
-#' #' read_csv_with_warnings <- errorSaver(readr::read_csv)
-#' f.as.numeric(c("a","b",1))
+#' read_csv_with_warnings <- errorSaver(readr::read_csv)
 errorSaver <- function(fun)
   function(...) {
     warn <- err <- NULL

@@ -4,7 +4,7 @@
 \alias{validate_all}
 \title{read the list of urls, read, confirm column format, validate and
 when using in development mode, make sure do run \code{devtools::load_all()}
-to get all the commruleR functions loaded
+to get all the collaboratR functions loaded
 save to CSV}
 \usage{
 validate_all(urls.df = NULL, drive_email = NULL)
@@ -12,6 +12,6 @@ validate_all(urls.df = NULL, drive_email = NULL)
 \description{
 read the list of urls, read, confirm column format, validate and
 when using in development mode, make sure do run \code{devtools::load_all()}
-to get all the commruleR functions loaded
+to get all the collaboratR functions loaded
 save to CSV
 }

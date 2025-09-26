@@ -46,7 +46,7 @@ data(commassembly_rules_env_str)
 
 # sheet_data is one row of the URLS data frame, as a list, url is ..$url
 read_and_report<- function(url, tab_name, spec.df, id=NA){
-  read_data_sheet_save_warnings <- commruleR::errorSaver(read_data_sheet)
+  read_data_sheet_save_warnings <- collaboratR::errorSaver(read_data_sheet)
   data.df <- read_data_sheet_save_warnings(gurl = url,
                                            tab_name,
                                            spec.df)
@@ -141,7 +141,7 @@ validate_and_save_one<-function(id, urls.df = NULL, verbose = FALSE){
 
 #' read the list of urls, read, confirm column format, validate and
 #' when using in development mode, make sure do run `devtools::load_all()`
-#' to get all the commruleR functions loaded
+#' to get all the collaboratR functions loaded
 #' save to CSV
 validate_all<- function(urls.df=NULL, drive_email =NULL){
   if(!gsheet_auth_setup(drive_email)){

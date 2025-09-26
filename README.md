@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# commruleR
+# collaboratR
 
 ### [MSU IBEEM](https://ibeem.msu.edu) commRULES project
 
@@ -10,7 +10,7 @@
 [![Lifecycle:
 experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 [![CRAN
-status](https://www.r-pkg.org/badges/version/commruleR)](https://CRAN.R-project.org/package=commruleR)
+status](https://www.r-pkg.org/badges/version/collaboratR)](https://CRAN.R-project.org/package=collaboratR)
 <!-- badges: end -->
 
 *This is very early version under heavy development.*
@@ -22,7 +22,7 @@ project.
 1.  commRULES data: version controlled data collection for tracking
     provenance using git, this is the L0 and L1 layers in the EDI
     framework
-2.  commRuler: commRULES data management code for L0 and L0-\>L1 layer
+2.  collaboratR: commRULES data management code for L0 and L0-\>L1 layer
     in EDI framework
 3.  commRULES-analysis: R code for reproducible data analysis , L1-\>L2
     layers in EDI framework

@@ -26,8 +26,7 @@ this method breaks down if the result
 log.errors <- errorSaver(log)
 log.errors("a")
 log.errors(1)
-#' read_csv_with_warnings <- errorSaver(readr::read_csv)
-f.as.numeric(c("a","b",1))
+read_csv_with_warnings <- errorSaver(readr::read_csv)
 }
 \references{
 \url{http://stackoverflow.com/questions/4948361/how-do-i-save-warnings-and-errors-as-output-from-a-function}

@@ -16,7 +16,7 @@ knitr::opts_chunk$set(
 
 ```{r setup}
 require(dplyr)
-library(commruleR)
+library(collaboratR)
 ```
 
 ## Authenticate to gdrive/sheets.  Requires an email account
@@ -28,7 +28,7 @@ library(commruleR)
 # address, set it here.   If none is sent, the auth setup function will look in 
 # the environment (e.g. .Renviron file)
 drive_email <- NULL
-commruleR::gsheet_auth_setup(drive_email = drive_email)
+collaboratR::gsheet_auth_setup(drive_email = drive_email)
 ```
 
 
@@ -160,7 +160,7 @@ disabled for now, see loop to  validate below
 #     
 #     # this will create list with 'warnings' if there are warnings
 #     
-#     read_data_sheet_save_warnings <- commruleR::errorSaver(read_data_sheet)
+#     read_data_sheet_save_warnings <- collaboratR::errorSaver(read_data_sheet)
 #     env.df <- read_data_sheet_save_warnings(gurl = test_gsheet_url, 
 #                               tab_name = 'env_data', 
 #                               spec.df = commassembly_rules_env_str)
@@ -202,7 +202,7 @@ env_validation_file <- '../inst/rules/env_validation_rules.yaml'
 
 # sheet_data is one row of the URLS data frame, as a list, url is ..$url
 read_and_report<- function(url, tab_name, spec.df){
-  read_data_sheet_save_warnings <- commruleR::errorSaver(read_data_sheet)
+  read_data_sheet_save_warnings <- collaboratR::errorSaver(read_data_sheet)
   data.df <- read_data_sheet_save_warnings(gurl = url, 
                               tab_name, 
                               spec.df)

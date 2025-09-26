@@ -1,4 +1,4 @@
-## commruleR package, for the IBEEM Community Assembly Rules project
+## collaboratR package, for the IBEEM Community Assembly Rules project
 ## Rscript that preparse data to be saved in the /data folder of this package
 ## used for working with the Comm Assembly Rules project
 #
@@ -10,7 +10,7 @@
 
 # requirements:
 #  - devtools package
-#  - this package commruleR dependencies installed, install with devtools::install()
+#  - this package collaboratR dependencies installed, install with devtools::install()
 
 # inputs: set the TEST_TEMPLATE_URL variable in .Renviron
 # outputs:

@@ -15,7 +15,7 @@ knitr::opts_chunk$set(
 ```
 
 ```{r setup}
-library(commruleR)
+library(collaboratR)
 ```
 
 This package enables the use of Google Sheets as a collabrative data and meta-

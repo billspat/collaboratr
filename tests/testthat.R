@@ -7,6 +7,6 @@
 # * https://testthat.r-lib.org/articles/special-files.html
 
 library(testthat)
-library(commruleR)
+library(collaboratR)
 
-test_check("commruleR")
+test_check("collaboratR")
