@@ -1,0 +1,41 @@
+---
+title: "Google Sheet Validation Process Outline"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Google Sheet Validation Process Outline}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(commruleR)
+```
+
+This package enables the use of Google Sheets as a collabrative data and meta-
+data entry tool  for researchers of different skill sets, 
+automated validation of the data using standarized rules, and 
+to tracking all changes to data using git
+
+
+### Components
+
+Automated: 
+
+- pull metadata from google sheets to allow collaboration
+- pull data from Google Sheets
+- validation using coded rules against standardized rule sets and reporting of errors
+- automate pulling 
+- commiting data files in text CSV format for change management using git
+
+### Setup/Requirements
+
+1. Metadata in a google sheet
+
+- list of all fields and 
