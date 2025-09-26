@@ -13,7 +13,14 @@ NAs, e.g. can indicate "NA" in numeric cells
 \item requires a spec sheet that uses names per \code{type_converter_fun()}
 }}
 \usage{
-read_data_sheet(gurl, tab_name, spec.df, rows_to_skip = 1, use_readr = TRUE)
+read_data_sheet(
+  gurl,
+  tab_name,
+  spec.df,
+  rows_to_skip = 1,
+  use_readr = TRUE,
+  quiet = TRUE
+)
 }
 \arguments{
 \item{gurl}{google sheet url or ID per googlesheets package}

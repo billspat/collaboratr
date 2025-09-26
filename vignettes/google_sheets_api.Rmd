@@ -13,7 +13,7 @@ on desktop have historically had issues with datetime conversion (Mac vs Windows
 
 A main feature then is to read in google 'sheets' files as data for validation and processing.   However, accessing google drive files requires significant setup for an 'app' to access files.   This vignette describes how that works. 
 
-This package heavily depends on the great work from Posit in the `googlesheets4` package, which in turn relies on the Posit-authored [gargle](https://gargle.r-lib.org) package
+This package heavily depends on the great work from Posit in the `googlesheets4` package, which in turn relies on the Posit-authored [gargle](Bryan J, Citro C, Wickham H 2023). gargle: Utilities for Working with Google APIs. https://gargle.r-lib.org.) package
 
 However before even starting R you need a Google Cloud project.   The gargle package has some instructions for this 
 
