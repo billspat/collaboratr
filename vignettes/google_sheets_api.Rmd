@@ -8,32 +8,34 @@ vignette: >
 ---
 
 A goal of this package is to enable the use of Google Sheets for collaborative data entry with 
-familiar spreadsheet features.    The package could also have used MS Office on-line excel editing, but excel files 
+familiar spreadsheet features.  The package could also have used MS Office on-line excel editing, but excel files 
 on desktop have historically had issues with datetime conversion (Mac vs Windows), line endings, and character encoding. 
 
 A main feature then is to read in google 'sheets' files as data for validation and processing.   However, accessing google drive files requires significant setup for an 'app' to access files.   This vignette describes how that works. 
 
-This package heavily depends on the great work from Posit in the `googlesheets4` package, which in turn relies on the Posit-authored [gargle](Bryan J, Citro C, Wickham H 2023). gargle: Utilities for Working with Google APIs. https://gargle.r-lib.org.) package
+This package relies upon the great work from Posit in the `googlesheets4` package, which in turn relies on the Posit-authored [gargle](Bryan J, Citro C, Wickham H 2023). gargle: Utilities for Working with Google APIs. https://gargle.r-lib.org.) 
 
-However before even starting R you need a Google Cloud project.   The gargle package has some instructions for this 
-
-`vignette("get-api-credentials", package = "gargle")`
+However before even starting R you need a Google Cloud project. The gargle package has some instructions for this: `vignette("get-api-credentials", package = "gargle")`
 
 This is essentially a desktop app to read private google sheets, so in that guide we wan at to create "OAuth 2.0 client ID and secret"
 
-The 'gargle' vignette says 
+The 'gargle' vignette states:
+
 >Note that most users of gargle-using packages do not need to read this and can just enjoy the automatic token flow. This article is for people who have a specific reason to be more proactive about auth.
 
-But I've found that one get several "insufficient permissions" at my institution to access files on a shared drive without going through this process. 
+We've found that one gets several "insufficient permissions" at out institution 
+since Google has added several layers of permissions Google Workspace, and to 
+access files on a shared drives we have to go through this process.  YMMV
 
+Workflow summary:
 
-
-
-
-*DRAFT* summary:
-
-- get a google workspace account
-- get a google cloud account.   If your team is all using the same google workspace (e.g. at the same university or company) it's much easier and  you should create a google cloud account in that domain.  Most institutions restrict this so you may need help from your institutions cloud gatekeepers.   Often it's the IT department.   You can create a free account which requires a credit card, but this process will not have any charges and you will have to use 
+- get a google workspace account, or use your intitutions account
+- get a google cloud account.  Each institutione regulated google cloud accounts
+  differently. At ours you must request it and request access for each person.  
+  If your team is all using the same google workspace (e.g. at the same university or company) it's much easier and  you should create a google cloud account in that domain.  Most institutions restrict this so you may need help from your institutions cloud gatekeepers.  
+  The process described here does not require a "billing account" associated 
+  with your google cloud account as it's only need to enable the APIs and there 
+  are no charges for doing so.  
 
 - create a new cloud project in the console
 - in the console go to the APIs page https://console.cloud.google.com/apis/

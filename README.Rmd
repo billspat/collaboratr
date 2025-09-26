@@ -15,37 +15,47 @@ knitr::opts_chunk$set(
 
 # collaboratR
 
-### [MSU IBEEM](https://ibeem.msu.edu) commRULES project
+### A package to support collaborative meta-analysis for [MSU IBEEM](https://ibeem.msu.edu) 
 
 <!-- badges: start -->
 [![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
-[![CRAN status](https://www.r-pkg.org/badges/version/collaboratR)](https://CRAN.R-project.org/package=collaboratR)
 <!-- badges: end -->
 
-*This is very early version under heavy development.*
+### Motivation
+
+Performaing a Meta-analysis requires collating and harmonizing data extracted 
+from many different sources but most frequently scientific publications.  
+Collaborative meta-analysis requires a group of scientists to collectively develop
+and agree on their goals, type of data extracted, format of the those data, and to 
+do so extremely consistently across papers.  This package helps to support that 
+efficiently by 
 
 This R package is part of 3 repositories that support the data entry, validation and accumulation of a meta-analysis for the commRULES project.  
 
-1. commRULES data: version controlled data collection for tracking provenance using git, this is the L0 and L1  layers in the EDI framework
-2. collaboratR: commRULES data management code for L0 and L0->L1 layer in EDI framework
-3. commRULES-analysis: R code for reproducible data analysis , L1->L2 layers in EDI framework
+
+1. collaboratR: commRULES data management code for L0 and L0->L1 layer in EDI framework
+1. data: version controlled data collection for tracking provenance using git, this is the L0 and L1  layers in the EDI framework
+1. analysis: R code for reproducible data analysis , L1->L2 layers in EDI framework
 
 ## Installation - Package
 
-This package uses [renv](https://rstudio.github.io/renv/) to manage the packages you need to install, which creates an `renv.lock` file for you.  
-
-- install RENV: this can go into your R environment used for all packages, so fire up R with now project select and `install.packages('renv')`
 - clone this repository into a [new Rstudio project](https://docs.posit.co/ide/user/ide/guide/code/projects.html) and open it
-- inside the Rstudio project in the R console, `renv::restore()`
 
-## Google Drive Project Setup
+- install required packages: 
+  This package uses [renv](https://rstudio.github.io/renv/) to manage the packages you need to install, which creates an `renv.lock` file for you.     1. install the renv package: this can go into your R environment used for all packages.  
+  2. in R run `renv::restore()` or if that complains about R versions
 
-Using google drive via MSU seems to require creating a Google Cloud project, enabling the proper
-APIs and and assigning permissions
+*additional packages are required to build the package and this website, source the script*
+`R/install_dev_packages.R`
 
-Note that for safety, this package only reads from google drive and it never writes to google drive.  Therefore it only requests 'read-only' access.  
+## Data Google Drive Project Setup
 
-Full documentation for how to set this up is forthcoming
+See the Vignette ["Google Sheets API setup using Google Cloud"](vignettes/google_sheets_api.Rmd) 
+for details about setting up google sheets connection with R, which requires
+a google cloud project in your institution
+
+Note that for safety, this package only reads from google drive and it never
+writes to google drive.  Therefore it only requests 'read-only' access.
 
 ## Usage
 
