@@ -1,0 +1,4 @@
+url: https://github.com/IBEEM-MSU/collaboratR
+template:
+  bootstrap: 5
+  bootswatch: lumen

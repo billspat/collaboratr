@@ -1,0 +1,46 @@
+# get a google drive file object given path and share drive
+
+given a google filepath , find it in our shared drive and read it in. If
+there are multiple files found with the same name on the share drive,
+throws a warning and reads only the first one it finds (which may not be
+the most recent one! )
+
+## Usage
+
+``` r
+get_gsfile(
+  file_name_or_url,
+  shared_drive = NULL,
+  drive_path = NULL,
+  drive_email = NULL
+)
+```
+
+## Arguments
+
+- shared_drive:
+
+  optional name of the shared drive to look in, will read from the
+  environment 'PROJECT_SHARE_DRIVE' ignored if URL is sent
+
+- drive_path:
+
+  optional standard path for project files, will read from environment
+  'PROJECT_SHARE_DRIVE_PATH'; ignored if URL is sent
+
+- filepath:
+
+  full name of the file (e.g. myfile.csv ), which could include
+  sub-folder (myfiles/myfile.csv) OR google drive URL
+
+## Value
+
+a gsfile object from google drive library, useable to read from other
+gdrive/gsheet functions
+
+## Details
+
+This is not needed for working with folders/datafiles connected to your
+computer via Google Drive Desktop (Mac/Windows), only for reading files
+directly from google drive. If you don't have permission to access the
+share drive it will not work
