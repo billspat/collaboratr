@@ -261,7 +261,6 @@
         "cli",
         "covr",
         "decor",
-        "desc",
         "ggplot2",
         "glue",
         "knitr",
