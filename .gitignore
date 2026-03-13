@@ -6,8 +6,9 @@ renv/
 ~$*.xlsx
 *.json
 inst/doc
-int/credentials/*.json
+inst/credentials/
 *.csv
+L0
 
 
 
