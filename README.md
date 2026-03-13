@@ -6,8 +6,6 @@
 **A package to support collaborative meta-analysis for [MSU
 IBEEM](https://ibeem.msu.edu)**
 
-<https://ibeem-msu.github.io/collaboratR/>
-
 ### Authors:
 
 - Patrick S Bills
