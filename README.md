@@ -3,7 +3,23 @@
 
 # collaboratR
 
-### A package to support collaborative meta-analysis for [MSU IBEEM](https://ibeem.msu.edu)
+**A package to support collaborative meta-analysis for [MSU
+IBEEM](https://ibeem.msu.edu)**
+
+<https://ibeem-msu.github.io/collaboratR/>
+
+### Authors:
+
+- Patrick S Bills
+- Ashwini Ramesh
+- Laís Petri
+- Phoebe Lehman Zarnetske, PI and Director, IBEEM
+
+### Contributors:
+
+- Kelly Kapsar, Data Scientist, IBEEM
+- Alejandra Martinez Blancas
+- Amar Deep Tiwari
 
 <!-- badges: start -->
 
@@ -13,24 +29,32 @@ experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](h
 
 ### Motivation
 
-Performaing a Meta-analysis requires collating and harmonizing data
+Performing a Meta-analysis requires collating and harmonizing data
 extracted from many different sources but most frequently scientific
 publications.  
 Collaborative meta-analysis requires a group of scientists to
 collectively develop and agree on their goals, type of data extracted,
 format of the those data, and to do so extremely consistently across
-papers. This package helps to support that efficiently by
+papers. This package helps to support that efficiently by the
+easy-to-use Google Sheets for data definition and data entry. The
+workflow in this project can read directly from Google sheets into CSVs
+and validate the structure of a google sheet as well as the data using
+the Validate package.
 
-This R package is part of 3 repositories that support the data entry,
-validation and accumulation of a meta-analysis for the commRULES
-project.
+<!-- insert description of the EDI data transform framework here -->
 
-1.  collaboratR: commRULES data management code for L0 and L0-\>L1 layer
-    in EDI framework
+Originally, this This R package was part of 3 repositories that support
+the data entry, validation and accumulation of a meta-analysis for a
+research project sponsored by MSU IBEEM
+
+1.  collaboratR: data management code for L0 and L0-\>L1 layer in EDI
+    framework
 2.  data: version controlled data collection for tracking provenance
-    using git, this is the L0 and L1 layers in the EDI framework
+    using git, this is the L0 and L1 layers in the EDI framework. the
+    collaboratR package assists with data transfer and validation from
+    Google drive into the data repository.
 3.  analysis: R code for reproducible data analysis , L1-\>L2 layers in
-    EDI framework
+    EDI framework, using data in the data repository.
 
 ## Installation - Package
 
@@ -49,25 +73,36 @@ project.
 *additional packages are required to build the package and this website,
 source the script* `R/install_dev_packages.R`
 
+### Installation/Testing
+
+Google drive in this package is set to interaction. To run any building,
+installing or checking in R, you must first manually connect to google
+drive, which must be set-up properly first.
+
+See the vignette in this package “Google Sheets API setup using Google
+Cloud”, or in this source code see [Google Sheets Vignette
+RMD](vignettes/google_sheets_api.Rmd)
+
+Once set-up you may have to log-in manually prior to running tests or
+checks, use
+
+``` r
+source("R/gdrive.R")
+
 ## Data Google Drive Project Setup
 
-See the Vignette [“Google Sheets API setup using Google
-Cloud”](vignettes/google_sheets_api.Rmd) for details about setting up
-google sheets connection with R, which requires a google cloud project
-in your institution
+See the Vignette ["Google Sheets API setup using Google Cloud"](vignettes/google_sheets_api.Rmd) 
+for details about setting up google sheets connection with R, which requires
+a google cloud project in your institution
 
-Note that for safety, this package only reads from google drive and it
-never writes to google drive. Therefore it only requests ‘read-only’
-access.
+Note that for safety, this package only reads from google drive and it never
+writes to google drive.  Therefore it only requests 'read-only' access.
 
 ## Usage
 
-When reading in data sheets, you provide a URL for a datasheet that
-exists in any folder that you have access to. The system will attempt to
-log you into to google drive and requests your permission for this code
-to access files on your behalf.
+When reading in data sheets, you provide a URL for a datasheet that exists in any folder that you have access to.   The system will attempt to log you into to google drive and requests your permission for this code to access files on your behalf.   
 
-``` r
+```R
 gurl<- 'https://docs.google.com/spreadsheets/d/1w6sYozjybyd53eeiTdigrRTonteQW2KXUNZNmEhQyM8/edit?gid=0#gid=0'
 study_data<- read_commrules_sheet(gurl)
 ```
